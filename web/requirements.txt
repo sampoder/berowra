@@ -1,1 +1,3 @@
 flask
+deta
+python-dotenv
