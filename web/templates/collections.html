@@ -13,9 +13,9 @@
   >
     <dl
       class="
-        grid
+        block
         sm:block
-        lg:grid
+        lg:block
         xl:block
         grid-cols-2 grid-rows-2
         items-center
@@ -44,7 +44,20 @@
 </li>
 {% endmacro %}
 
-<section class="pt-6 pb-4 sm:pb-6 lg:pb-4 xl:pb-6 space-y-4">
+<section
+  class="
+    pt-6
+    pb-4
+    sm:pb-6
+    lg:pb-4
+    xl:pb-6
+    mb-6
+    sm:mb-6
+    lg:mb-6
+    xl:mb-6
+    space-y-4
+  "
+>
   <form class="relative">
     <svg
       width="20"
@@ -80,9 +93,11 @@
     />
   </form>
   <ul
-    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4"
+    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
   >
-    {{ collection('Hello', 'Hi', 'hi') }}
+    {% for item in collections %}
+      {{ collection(item.title, 'Hi', 'hi') }}
+    {% endfor %} 
     <li class="flex rounded-lg">
       <a
         href="/new"
@@ -99,7 +114,7 @@
           hover:border-blue-600
         "
       >
-        New Project
+        New Collection
       </a>
     </li>
   </ul>
