@@ -1,4 +1,4 @@
-{% macro collection(title, description, key) %}
+{% macro content(title, color, key, lastUpdated) %}
 <li>
   <a
     href="/collection/{{key}}"
@@ -7,7 +7,7 @@
       block
       rounded-lg
       p-4
-      border-2 border-gray-200
+      border border-{{color}}
       hover:border-blue-600
     "
   >
@@ -21,23 +21,9 @@
         items-center
       "
     >
-      <div>
-        <dd class="leading-6 font-medium text-black">{{title}}</dd>
-      </div>
-      <div>
-        <dt class="sr-only">Description</dt>
-        <dd
-          class="
-            group-hover:text-light-blue-200
-            text-sm
-            font-medium
-            sm:mb-4
-            lg:mb-0
-            xl:mb-4
-          "
-        >
-          {{description}}
-        </dd>
+      <div class="flex">
+        <div class="leading-6 font-medium text-black overflow-x-hidden flex-grow">{{title}}</div>
+        <div class="leading-6 font-medium text-black overflow-x-hidden">{{lastUpdated}}</div>
       </div>
     </dl>
   </a>
@@ -132,10 +118,11 @@
   </form>
  
   <ul
-    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+    class="grid grid-cols-1 gap-4"
   >
-    {% for item in collections %} {{ collection(item.title, 'Hi', item.key) }}
-    {% endfor %}
+   {{ content('20 Reasons to use Flask', 'green-500', 'key1883818', '2021-06-27 18:05:36.004913'.split('.')[0]) }}
+   {{ content('20 Reasons not to use Flask', 'yellow-500', 'key1883818', '2021-06-27 18:05:36.004913'.split('.')[0]) }}
+    
     <li class="flex rounded-lg">
       <a
         href="/new"

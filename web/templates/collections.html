@@ -1,4 +1,4 @@
-{% macro collection(title, description, key) %}
+{% macro collection(title, lastUpdated, key) %}
 <li>
   <a
     href="/collection/{{key}}"
@@ -36,7 +36,7 @@
             xl:mb-4
           "
         >
-          {{description}}
+          {{lastUpdated.split('.')[0]}}
         </dd>
       </div>
     </dl>
