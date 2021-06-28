@@ -15,9 +15,13 @@ collectionsDB = deta.Base("collections")
 
 @app.route('/', methods=["GET"])
 def index():
-    items = collectionsDB.fetch(pages=1, buffer=50000)
+    print(request.args.get('search'))
+    items = collectionsDB.fetch({
+        "title?contains": request.args.get('search')
+    }if request.args.get('search') != None else {}, pages=1, buffer=50000)
     for sub_list in items:
         items = sub_list
+    print(items)
     return render_template('index.html', collections=items)
 
 
@@ -31,19 +35,23 @@ def new():
                 finalData.insert(
                     (int(y[0].replace('fieldType', '')) - 1), {'type': y[1]})
             if 'fieldTitle' in y[0]:
-                finalData[int(y[0].replace('fieldTitle', '')) - 1]['title'] = y[1]
-        print(finalData)
+                finalData[int(y[0].replace('fieldTitle', '')) -
+                          1]['title'] = y[1]
         collectionsDB.insert({
             "title": request.form['title'],
-            "templateItems": [],
+            "templateItems": finalData,
             "lastUpdated": str(datetime.datetime.now())
         })
-        items = collectionsDB.fetch(pages=1, buffer=50000)
-        for sub_list in items:
-            items = sub_list
         return redirect('/')
     else:
         return render_template('new.html')
+
+
+@app.route('/collection/<id>', methods=['GET'])
+def collection(id):
+    data = collectionsDB.get(id)
+    print(data)
+    return render_template("collection.html", title=data['title'])
 
 
 if __name__ == "__main__":

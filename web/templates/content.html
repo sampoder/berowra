@@ -22,7 +22,7 @@
       "
     >
       <div>
-        <dd class="leading-6 font-semibold text-black">{{title}}</dd>
+        <dd class="leading-6 font-medium text-black">{{title}}</dd>
       </div>
       <div>
         <dt class="sr-only">Description</dt>
@@ -58,7 +58,26 @@
     space-y-4
   "
 >
-  <form class="relative">
+  <form class="relative flex">
+    <button
+      type="button"
+      class="
+        rounded-l-md
+        py-2
+        px-3
+        text-gray-100
+        focus:border-blue-300
+        focus:ring
+        focus:ring-blue-200
+        focus:ring-opacity-50
+        text-left
+        bg-blue-600
+      "
+    >
+      {{ title }}
+    </button>
+    
+    <div class="relative flex-grow mr-4">
     <svg
       width="20"
       height="20"
@@ -71,33 +90,52 @@
         d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
       />
     </svg>
+    
     <input
       class="
         focus:border-light-blue-500
-        focus:ring-1
+        focus:ring-0
         focus:ring-light-blue-500
         focus:outline-none
         w-full
+        h-full
         text-sm text-black
         placeholder-gray-500
         border border-gray-200
-        rounded-md
+        rounded-r-md
         py-2
         pl-10
+        
       "
       type="text"
-      aria-label="Filter projects"
-      placeholder="Filter projects"
+      aria-label="Filter content"
+      placeholder="Filter content"
       id="search"
       name="search"
-    />
+    /></div> <button
+    type="button"
+    class="
+      py-2
+      px-3
+      rounded-md
+      text-gray-100
+      focus:border-blue-300
+      focus:ring
+      focus:ring-blue-200
+      focus:ring-opacity-50
+      text-left
+      bg-green-600
+    "
+  >
+    Create New
+  </button>
   </form>
+ 
   <ul
     class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
   >
-    {% for item in collections %}
-      {{ collection(item.title, item.lastUpdated, item.key) }}
-    {% endfor %} 
+    {% for item in collections %} {{ collection(item.title, 'Hi', item.key) }}
+    {% endfor %}
     <li class="flex rounded-lg">
       <a
         href="/new"
