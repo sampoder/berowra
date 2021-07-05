@@ -1,7 +1,7 @@
-{% macro content(title, color, key, lastUpdated) %}
+{% macro content(title, color, key, lastUpdated, url) %}
 <li>
   <a
-    href="/collection/{{key}}"
+    href="{{url}}"
     class="
       group
       block
@@ -21,9 +21,19 @@
         items-center
       "
     >
-      <div class="flex">
-        <div class="leading-6 font-medium text-black overflow-x-hidden flex-grow">{{title}}</div>
-        <div class="leading-6 font-medium text-black overflow-x-hidden">{{lastUpdated}}</div>
+      <div class="flex" style="height: 24px">
+        <img
+          src="{{url}}"
+          class="flex justify-center h-full object-contain rounded-md mr-2"
+        />
+        <div
+          class="leading-6 font-medium text-black overflow-x-hidden flex-grow"
+        >
+          {{title}}
+        </div>
+        <div class="leading-6 font-medium text-black overflow-x-hidden">
+          {{lastUpdated}}
+        </div>
       </div>
     </dl>
   </a>
@@ -44,103 +54,96 @@
     space-y-4
   "
 >
-  <form class="relative flex">
-    <button
-      type="button"
-      class="
-        rounded-l-md
-        py-2
-        px-3
-        text-gray-100
-        focus:border-blue-300
-        focus:ring
-        focus:ring-blue-200
-        focus:ring-opacity-50
-        text-left
-        bg-blue-600
-      "
-    >
-      {{ title }}
-    </button>
-    
-    <div class="relative flex-grow mr-4">
-    <svg
-      width="20"
-      height="20"
-      fill="currentColor"
-      class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-    >
-      <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
-        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-      />
-    </svg>
-    
-    <input
-      class="
-        focus:border-light-blue-500
-        focus:ring-0
-        focus:ring-light-blue-500
-        focus:outline-none
-        w-full
-        h-full
-        text-sm text-black
-        placeholder-gray-500
-        border border-gray-200
-        rounded-r-md
-        py-2
-        pl-10
-        
-      "
-      type="text"
-      aria-label="Filter content"
-      placeholder="Filter content"
-      id="search"
-      name="search"
-    /></div> <button
-    type="button"
-    class="
-      py-2
-      px-3
-      rounded-md
-      text-gray-100
-      focus:border-blue-300
-      focus:ring
-      focus:ring-blue-200
-      focus:ring-opacity-50
-      text-left
-      bg-green-600
-    "
-  >
-    Create New
-  </button>
-  </form>
- 
-  <ul
-    class="grid grid-cols-1 gap-4"
-  >
-   {{ content('20 Reasons to use Flask', 'green-500', 'key1883818', '2021-06-27 18:05:36.004913'.split('.')[0]) }}
-   {{ content('20 Reasons not to use Flask', 'yellow-500', 'key1883818', '2021-06-27 18:05:36.004913'.split('.')[0]) }}
-    
-    <li class="flex rounded-lg">
-      <a
-        href="/new"
+  <div class="relative flex">
+    <form class="relative flex flex-grow">
+      <button
+        type="button"
         class="
-          w-full
-          flex
-          items-center
-          justify-left
-          rounded-lg
-          border-2 border-dashed border-gray-200
-          text-sm
-          font-medium
-          p-4
-          hover:border-blue-600
+          rounded-l-md
+          py-2
+          px-3
+          text-gray-100
+          focus:border-blue-300
+          focus:ring
+          focus:ring-blue-200
+          focus:ring-opacity-50
+          text-left
+          bg-blue-600
         "
       >
-        New Item
-      </a>
-    </li>
+        {{ title }}
+      </button>
+
+      <div class="relative flex-grow mr-4">
+        <svg
+          width="20"
+          height="20"
+          fill="currentColor"
+          class="
+            absolute
+            left-3
+            top-1/2
+            transform
+            -translate-y-1/2
+            text-gray-400
+          "
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+          />
+        </svg>
+
+        <input
+          class="
+            focus:border-light-blue-500
+            focus:ring-0
+            focus:ring-light-blue-500
+            focus:outline-none
+            w-full
+            h-full
+            text-sm text-black
+            placeholder-gray-500
+            border border-gray-200
+            rounded-r-md
+            py-2
+            pl-10
+          "
+          type="text"
+          aria-label="Filter content"
+          placeholder="Filter content"
+          id="search"
+          name="search"
+        />
+      </div>
+    </form>
+    <form class="relative flex" method="post" enctype="multipart/form-data">
+      <label for="upload">
+        <div
+          class="
+            py-2
+            px-3
+            rounded-md
+            text-gray-100
+            focus:border-blue-300
+            focus:ring
+            focus:ring-blue-200
+            focus:ring-opacity-50
+            text-left
+            bg-green-600
+            cursor-pointer
+          "
+        >
+          Create New
+      </div>
+        <input type="file" name="file" id="upload" style="display: none" onchange="form.submit()" />
+      </label>
+    </form>
+  </div>
+
+  <ul class="grid grid-cols-1 gap-4">
+    {% for item in files %} {{ content(item, 'green-500', item, '',
+    '/file/'+item) }} {% endfor %}
   </ul>
 </section>
