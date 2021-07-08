@@ -2,3 +2,4 @@ flask
 deta
 python-dotenv
 werkzeug
+pytz

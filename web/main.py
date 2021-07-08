@@ -4,13 +4,17 @@ from dotenv import load_dotenv
 import os
 import datetime
 from werkzeug.utils import secure_filename
+import pytz
 load_dotenv()
 
 app = Flask(__name__)
 
 deta = Deta(os.getenv("DETA_KEY"))
 
+utc = pytz.utc
+
 collectionsDB = deta.Base("collections")
+contentDB = deta.Base("content")
 drive = deta.Drive("files")
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
@@ -92,7 +96,7 @@ def new():
         collectionsDB.insert({
             "title": request.form['title'],
             "templateItems": finalData,
-            "lastUpdated": str(datetime.datetime.now())
+            "lastUpdated": str(datetime.datetime.now(utc))
         })
         return redirect('/')
     else:
@@ -104,6 +108,18 @@ def collection(id):
     data = collectionsDB.get(id)
     print(data)
     return render_template("collection.html", title=data['title'])
+
+@app.route('/content/<id>', methods=['GET'])
+def content(id):
+    contentData = contentDB.get(id)
+    collectionData = collectionsDB.get(contentData['collectionKey'])
+    content = contentData['content']
+    if contentData['content'] == {}:
+        for x in collectionData['templateItems']:
+            if x != {}:
+                content[x['title']] = {'type': x['type']}
+    print(content)
+    return "Created"
 
 @app.route('/file/<id>', methods=['GET'])
 def getFile(id):
