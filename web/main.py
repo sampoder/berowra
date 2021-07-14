@@ -1,3 +1,4 @@
+from typing import Collection
 from flask import Flask, request, redirect, url_for, render_template, send_file
 from deta import Deta
 from dotenv import load_dotenv
@@ -5,6 +6,7 @@ import os
 import datetime
 from werkzeug.utils import secure_filename
 import pytz
+import random
 load_dotenv()
 
 app = Flask(__name__)
@@ -18,6 +20,7 @@ contentDB = deta.Base("content")
 drive = deta.Drive("files")
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
+
 @app.route('/', methods=["GET"])
 def index():
     print(request.args.get('search'))
@@ -28,6 +31,7 @@ def index():
         items = sub_list
     print(items)
     return render_template('index.html', collections=items)
+
 
 @app.route("/files", methods=['GET', 'POST'])
 def files():
@@ -50,36 +54,8 @@ def files():
             return render_template('files.html', title='Files', files=items['names'])
     items = drive.list()
     print(items)
-    return render_template('files.html', title='Files', files=items['names'])
+    return render_template('files.html', title='Files', files=items['names'], filesPage=True, collection=False)
 
-@app.route('/upload', methods=['GET', 'POST'])
-def upload_file():
-    if request.method == 'POST':
-        # check if the post request has the file part
-        if 'file' not in request.files:
-            print('No file part')
-            return redirect(request.url)
-        file = request.files['file']
-        # If the user does not select a file, the browser submits an
-        # empty file without a filename.
-        if file.filename == '':
-            print('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            res = drive.put(filename, file)
-            result = drive.list()
-            print(result)
-            return res
-    return '''
-    <!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form method=post enctype=multipart/form-data>
-      <input type=file name=file>
-      <input type=submit value=Upload>
-    </form>
-    '''
 
 @app.route('/new', methods=['GET', 'POST'])
 def new():
@@ -93,6 +69,9 @@ def new():
             if 'fieldTitle' in y[0]:
                 finalData[int(y[0].replace('fieldTitle', '')) -
                           1]['title'] = y[1]
+        for x, y in enumerate(finalData):
+            print(x, y)
+            finalData[x]['id'] = random.randint(0, 10000000000000)
         collectionsDB.insert({
             "title": request.form['title'],
             "templateItems": finalData,
@@ -106,20 +85,58 @@ def new():
 @app.route('/collection/<id>', methods=['GET'])
 def collection(id):
     data = collectionsDB.get(id)
-    print(data)
-    return render_template("collection.html", title=data['title'])
+    items = contentDB.fetch({"collectionKey": id}, pages=1, buffer=50000)
+    for sub_list in items:
+        items = sub_list
+    print(items)
+    return render_template("collection.html", title=data['title'], items=items, filesPage=False, collection=True, collectionId=id)
 
-@app.route('/content/<id>', methods=['GET'])
+
+@app.route('/content/<id>', methods=['GET', 'POST'])
 def content(id):
-    contentData = contentDB.get(id)
-    collectionData = collectionsDB.get(contentData['collectionKey'])
-    content = contentData['content']
-    if contentData['content'] == {}:
-        for x in collectionData['templateItems']:
-            if x != {}:
-                content[x['title']] = {'type': x['type']}
-    print(content)
-    return "Created"
+    if request.method == 'POST':
+        formData = list(request.form.items())
+        print(formData)
+        contentData = contentDB.get(id)
+        collectionData = collectionsDB.get(contentData['collectionKey'])
+        content = contentData['content']
+        if contentData['content'] == {}:
+            for x in collectionData['templateItems']:
+                if 'title' in x:
+                    content[x['id']] = {'type': x['type'], 'title': x['title']}
+        else:
+            for x in collectionData['templateItems']:
+                if 'title' in x and x['id'] not in content:
+                    content[x['id']] = x
+        title = ""
+        for x in enumerate(formData):
+            if x[1][0] == 'content_title':
+                title = x[1][1]
+            else:
+                content[int(x[1][0])]['value'] = x[1][1]
+        contentArray = list(content.items())
+        contentDB.update({'content': content, 'title': title}, id)
+    getContentData = contentDB.get(id)
+    getCollectionData = collectionsDB.get(getContentData['collectionKey'])
+    getContent = getContentData['content']
+    if getContentData['content'] == {}:
+        for x in getCollectionData['templateItems']:
+            if 'title' in x:
+                getContent[x['id']] = {'type': x['type'], 'title': x['title']}
+    else:
+        for x in getCollectionData['templateItems']:
+            if 'title' in x and str(x['id']) not in getContent:
+                print(x)
+                getContent[int(x['id'])] = x
+    getContentArray = list(getContent.items())
+    print(getContentArray)
+    return render_template('edit.html', content=getContentArray, title=getContentData['title'])
+
+@app.route('/collection/<id>/new', methods=['GET', 'POST'])
+def newContent(id):
+    res = contentDB.insert({"collectionKey": id, "content": {}, "title": "Unnamed Content"})
+    print(res)
+    return redirect('/content/'+res['key'])
 
 @app.route('/file/<id>', methods=['GET'])
 def getFile(id):

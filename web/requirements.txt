@@ -1,5 +1,5 @@
 flask
-deta
+deta==0.9
 python-dotenv
 werkzeug
 pytz

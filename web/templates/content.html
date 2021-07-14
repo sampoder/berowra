@@ -22,6 +22,44 @@
       "
     >
       <div class="flex" style="height: 24px">
+        <div
+          class="leading-6 font-medium text-black overflow-x-hidden flex-grow"
+        >
+          {{title}}
+        </div>
+        <div class="leading-6 font-medium text-black overflow-x-hidden">
+          {{lastUpdated}}
+        </div>
+      </div>
+    </dl>
+  </a>
+</li>
+{% endmacro %}
+
+{% macro file(title, color, key, lastUpdated, url) %}
+<li>
+  <a
+    href="{{url}}"
+    class="
+      group
+      block
+      rounded-lg
+      p-4
+      border border-{{color}}
+      hover:border-blue-600
+    "
+  >
+    <dl
+      class="
+        block
+        sm:block
+        lg:block
+        xl:block
+        grid-cols-2 grid-rows-2
+        items-center
+      "
+    >
+      <div class="flex" style="height: 24px">
         <img
           src="{{url}}"
           class="flex justify-center h-full object-contain rounded-md mr-2"
@@ -118,6 +156,7 @@
         />
       </div>
     </form>
+    {% if filesPage is true %}
     <form class="relative flex" method="post" enctype="multipart/form-data">
       <label for="upload">
         <div
@@ -140,10 +179,38 @@
         <input type="file" name="file" id="upload" style="display: none" onchange="form.submit()" />
       </label>
     </form>
+    {% endif %}
+    {% if collection is true %}
+    <div class="relative flex">
+      <a href="{{collectionId}}/new">
+        <div
+          class="
+            py-2
+            px-3
+            rounded-md
+            text-gray-100
+            focus:border-blue-300
+            focus:ring
+            focus:ring-blue-200
+            focus:ring-opacity-50
+            text-left
+            bg-green-600
+            cursor-pointer
+          "
+        >
+          Create New
+      </div>
+    </a>
+  </div>
+    {% endif %}
   </div>
 
   <ul class="grid grid-cols-1 gap-4">
-    {% for item in files %} {{ content(item, 'green-500', item, '',
-    '/file/'+item) }} {% endfor %}
+    {% for item in files %} 
+      {{ file(item, 'green-500', item, '', '/file/'+item) }} 
+    {% endfor %}
+    {% for item in items %} 
+      {{content(item.title, 'green-500', item, item.lastUpdated, '/content/'+item.key) }} 
+    {% endfor %}
   </ul>
 </section>
