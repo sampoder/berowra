@@ -32,6 +32,27 @@ def index():
     print(items)
     return render_template('index.html', collections=items)
 
+@app.route("/<id>/filesJSON", methods=['GET', 'POST'])
+def filesJSON(id):
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if id not in request.files:
+            print('No file part')
+            return redirect(request.url)
+        file = request.files[id]
+        # If the user does not select a file, the browser submits an
+        # empty file without a filename.
+        if file.filename == '':
+            print('No selected file')
+            return redirect(request.url)
+        if file:
+            filename = secure_filename(file.filename)
+            date = str(datetime.datetime.now(utc))
+            res = drive.put(date + filename, file)
+            return {'file': date + filename}
+    items = drive.list()
+    print(items)
+    return render_template('files.html', title='Files', files=items['names'], filesPage=True, collection=False)
 
 @app.route("/files", methods=['GET', 'POST'])
 def files():
@@ -48,7 +69,7 @@ def files():
             return redirect(request.url)
         if file:
             filename = secure_filename(file.filename)
-            res = drive.put(filename, file)
+            res = drive.put(str(datetime.datetime.now(utc)) + filename, file)
             items = drive.list()
             print(items)
             return render_template('files.html', title='Files', files=items['names'])
@@ -112,10 +133,19 @@ def content(id):
         for x in enumerate(formData):
             if x[1][0] == 'content_title':
                 title = x[1][1]
+            elif '-files-upload-box' in x[1][0]:
+                print('skipping')
+            elif '-file-checkbox-' in x[1][0]:
+                content[int(x[1][0].split('-file-checkbox-')[0])]['value'] = []
+                if x[1][1] == 'on':
+                    if "value" in content[int(x[1][0].split('-file-checkbox-')[0])]:
+                        content[int(x[1][0].split('-file-checkbox-')[0])]['value'].append(x[1][0].split('-file-checkbox-')[1])
+                    else:
+                        content[int(x[1][0].split('-file-checkbox-')[0])]['value'] = [x[1][0].split('-file-checkbox-')[1]]              
             else:
                 content[int(x[1][0])]['value'] = x[1][1]
         contentArray = list(content.items())
-        contentDB.update({'content': content, 'title': title}, id)
+        contentDB.update({'content': content, 'title': title, "lastUpdated": str(datetime.datetime.now(utc))}, id)
     getContentData = contentDB.get(id)
     getCollectionData = collectionsDB.get(getContentData['collectionKey'])
     getContent = getContentData['content']

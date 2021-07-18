@@ -39,6 +39,7 @@
               "
               placeholder=""
               name="title"
+              required
             />
           </label>
           <div id="fields">
@@ -58,13 +59,14 @@
                     focus:ring-opacity-50
                   "
                   name="fieldType1"
+                  required
                 >
                   <option>String</option>
                   <option>Date</option>
                   <option>Markdown</option>
                   <option>Number</option>
                   <option>Colour</option>
-                  <option>File</option>
+                  <option>Files</option>
                   <option>String Array</option>
                 </select>
               </label>
@@ -85,6 +87,7 @@
                   "
                   placeholder=""
                   name="fieldTitle1"
+                  required
                 />
               </label>
             </div>
@@ -154,11 +157,13 @@
               "
               name="fieldType${amountOfFields}"
             >
-              <option>String</option>
-              <option>Date</option>
-              <option>Long Text</option>
-              <option>Number</option>
-              <option>File</option>
+                <option>String</option>
+                <option>Date</option>
+                <option>Markdown</option>
+                <option>Number</option>
+                <option>Colour</option>
+                <option>Files</option>
+                <option>String Array</option>
             </select>
           </label>
           <label class="block flex-grow">
