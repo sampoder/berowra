@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% include 'header.html' %}
+  </head>
+  <body>
+    {% include 'nav.html' %}
+    <section
+      class="
+        pt-6
+        pb-4
+        sm:pb-6
+        lg:pb-4
+        xl:pb-6
+        mb-6
+        sm:mb-6
+        lg:mb-6
+        xl:mb-6
+        space-y-4
+      "
+    >
+      <h2 class="text-2xl font-bold">Create A Collection</h2>
+      <form action="/new" method="post" class="mt-8 max-w-xl">
+        <div class="grid grid-cols-1 gap-6">
+          <label class="block">
+            <span class="text-gray-700">Collection Title</span>
+            <input
+              type="text"
+              class="
+                mt-1
+                block
+                w-full
+                rounded-md
+                border-gray-300
+                focus:border-blue-300
+                focus:ring
+                focus:ring-blue-200
+                focus:ring-opacity-50
+              "
+              placeholder=""
+              name="title"
+              required
+            />
+          </label>
+          <div id="fields">
+            <div class="flex w-full">
+              <label class="block">
+                <span class="text-gray-700">Field type</span>
+                <select
+                  class="
+                    block
+                    mt-1
+                    mr-3
+                    rounded-md
+                    border-gray-300
+                    focus:border-blue-300
+                    focus:ring
+                    focus:ring-blue-200
+                    focus:ring-opacity-50
+                  "
+                  name="fieldType1"
+                  required
+                >
+                  <option>String</option>
+                  <option>Date</option>
+                  <option>Markdown</option>
+                  <option>Number</option>
+                  <option>Colour</option>
+                  <option>Files</option>
+                  <option>String Array</option>
+                </select>
+              </label>
+              <label class="block flex-grow" name="title">
+                <span class="text-gray-700">Field Name</span>
+                <input
+                  type="text"
+                  class="
+                    mt-1
+                    block
+                    rounded-md
+                    border-gray-300
+                    focus:border-blue-300
+                    focus:ring
+                    focus:ring-blue-200
+                    focus:ring-opacity-50
+                    w-full
+                  "
+                  placeholder=""
+                  name="fieldTitle1"
+                  required
+                />
+              </label>
+            </div>
+          </div>
+          <button
+            class="
+              mt-1
+              border
+              rounded-md
+              py-2
+              px-3
+              text-gray-700
+              border-gray-300
+              focus:border-blue-300
+              focus:ring
+              focus:ring-blue-200
+              focus:ring-opacity-50
+              text-left
+            "
+            onclick="createFieldField()"
+            type="button"
+          >
+            Add New Field
+          </button>
+          <input
+            type="submit"
+            class="
+              mt-1
+              border
+              rounded-md
+              py-2
+              px-3
+              text-gray-100
+              border-gray-800
+              focus:border-blue-300
+              focus:ring
+              focus:ring-blue-200
+              focus:ring-opacity-50
+              text-left
+              bg-blue-600
+            "
+          />
+        </div>
+      </form>
+    </section>
+    {% include 'footer.html' %}
+  </body>
+  <script>
+    let amountOfFields = 1;
+    function createFieldField() {
+      amountOfFields += 1;
+      let htmlString = `
+        <div class="flex w-full mt-6">
+          <label class="block">
+            <span class="text-gray-700">Field type</span>
+            <select
+              class="
+                block 
+                mr-3
+                mt-1
+                rounded-md
+                border-gray-300
+                focus:border-blue-300
+                focus:ring
+                focus:ring-blue-200
+                focus:ring-opacity-50
+              "
+              name="fieldType${amountOfFields}"
+            >
+                <option>String</option>
+                <option>Date</option>
+                <option>Markdown</option>
+                <option>Number</option>
+                <option>Colour</option>
+                <option>Files</option>
+                <option>String Array</option>
+            </select>
+          </label>
+          <label class="block flex-grow">
+            <span class="text-gray-700">Field Name</span>
+            <input
+              type="text"
+              class="
+                mt-1
+                block
+                rounded-md
+                border-gray-300
+                focus:border-blue-300
+                focus:ring
+                focus:ring-blue-200
+                focus:ring-opacity-50
+                w-full
+              "
+              name="fieldTitle${amountOfFields}"
+              placeholder=""
+            />
+          </label>
+        </div>
+      `;
+      var div = document.createElement("div");
+      div.innerHTML = htmlString.trim();
+      document.getElementById("fields").appendChild(div);
+      // Change this to div.childNodes to support multiple top-level nodes
+      return div.firstChild;
+    }
+  </script>
+</html>

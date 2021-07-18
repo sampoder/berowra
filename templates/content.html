@@ -1,0 +1,216 @@
+{% macro content(title, color, key, lastUpdated, url) %}
+<li>
+  <a
+    href="{{url}}"
+    class="
+      group
+      block
+      rounded-lg
+      p-4
+      border border-{{color}}
+      hover:border-blue-600
+    "
+  >
+    <dl
+      class="
+        block
+        sm:block
+        lg:block
+        xl:block
+        grid-cols-2 grid-rows-2
+        items-center
+      "
+    >
+      <div class="flex" style="height: 24px">
+        <div
+          class="leading-6 font-medium text-black overflow-x-hidden flex-grow"
+        >
+          {{title}}
+        </div>
+        <div class="leading-6 font-medium text-black overflow-x-hidden">
+          {{lastUpdated}}
+        </div>
+      </div>
+    </dl>
+  </a>
+</li>
+{% endmacro %}
+
+{% macro file(title, color, key, lastUpdated, url) %}
+<li>
+  <a
+    href="{{url}}"
+    class="
+      group
+      block
+      rounded-lg
+      p-4
+      border border-{{color}}
+      hover:border-blue-600
+    "
+  >
+    <dl
+      class="
+        block
+        sm:block
+        lg:block
+        xl:block
+        grid-cols-2 grid-rows-2
+        items-center
+      "
+    >
+      <div class="flex" style="height: 24px">
+        <img
+          src="{{url}}"
+          class="flex justify-center h-full object-contain rounded-md mr-2"
+        />
+        <div
+          class="leading-6 font-medium text-black overflow-x-hidden flex-grow"
+        >
+          {{title}}
+        </div>
+        <div class="leading-6 font-medium text-black overflow-x-hidden">
+          {{lastUpdated}}
+        </div>
+      </div>
+    </dl>
+  </a>
+</li>
+{% endmacro %}
+
+<section
+  class="
+    pt-6
+    pb-4
+    sm:pb-6
+    lg:pb-4
+    xl:pb-6
+    mb-6
+    sm:mb-6
+    lg:mb-6
+    xl:mb-6
+    space-y-4
+  "
+>
+  <div class="relative flex">
+    <form class="relative flex flex-grow">
+      <button
+        type="button"
+        class="
+          rounded-l-md
+          py-2
+          px-3
+          text-gray-100
+          focus:border-blue-300
+          focus:ring
+          focus:ring-blue-200
+          focus:ring-opacity-50
+          text-left
+          bg-blue-600
+        "
+      >
+        {{ title }}
+      </button>
+
+      <div class="relative flex-grow mr-4">
+        <svg
+          width="20"
+          height="20"
+          fill="currentColor"
+          class="
+            absolute
+            left-3
+            top-1/2
+            transform
+            -translate-y-1/2
+            text-gray-400
+          "
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+          />
+        </svg>
+
+        <input
+          class="
+            focus:border-light-blue-500
+            focus:ring-0
+            focus:ring-light-blue-500
+            focus:outline-none
+            w-full
+            h-full
+            text-sm text-black
+            placeholder-gray-500
+            border border-gray-200
+            rounded-r-md
+            py-2
+            pl-10
+          "
+          type="text"
+          aria-label="Filter content"
+          placeholder="Filter content"
+          id="search"
+          name="search"
+        />
+      </div>
+    </form>
+    {% if filesPage is true %}
+    <form class="relative flex" method="post" enctype="multipart/form-data">
+      <label for="upload">
+        <div
+          class="
+            py-2
+            px-3
+            rounded-md
+            text-gray-100
+            focus:border-blue-300
+            focus:ring
+            focus:ring-blue-200
+            focus:ring-opacity-50
+            text-left
+            bg-green-600
+            cursor-pointer
+          "
+        >
+          Create New
+      </div>
+        <input type="file" name="file" id="upload" style="display: none" onchange="form.submit()" />
+      </label>
+    </form>
+    {% endif %}
+    {% if collection is true %}
+    <div class="relative flex">
+      <a href="{{collectionId}}/new">
+        <div
+          class="
+            py-2
+            px-3
+            rounded-md
+            text-gray-100
+            focus:border-blue-300
+            focus:ring
+            focus:ring-blue-200
+            focus:ring-opacity-50
+            text-left
+            bg-green-600
+            cursor-pointer
+          "
+        >
+          Create New
+      </div>
+    </a>
+  </div>
+    {% endif %}
+  </div>
+
+  <ul class="grid grid-cols-1 gap-4">
+    {% for item in files %} 
+      {{ file(item, 'green-500', item, '', '/file/'+item) }} 
+    {% endfor %}
+    {% for item in items %} 
+      {{content(item.title, 'green-500', item, item.lastUpdated, '/content/'+item.key) }} 
+    {% endfor %}
+  </ul>
+</section>

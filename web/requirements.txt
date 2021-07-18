@@ -1,5 +1,0 @@
-flask
-deta==0.9
-python-dotenv
-werkzeug
-pytz

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% include 'header.html' %}
+  </head>
+  <body>
+    {% include 'nav.html' %}
+    <section
+      class="
+        pt-6
+        pb-4
+        sm:pb-6
+        lg:pb-4
+        xl:pb-6
+        mb-6
+        sm:mb-6
+        lg:mb-6
+        xl:mb-6
+        space-y-4
+      "
+    >
+      <h2 class="text-2xl font-bold">Edit Content</h2>
+      <form method="post" class="mt-8 max-w-xl" id="main-form">
+        <div class="grid grid-cols-1 gap-6">
+          <label class="block">
+            <span class="text-gray-700">Content Title</span>
+            <input
+              type="text"
+              class="
+                mt-1
+                block
+                w-full
+                rounded-md
+                border-gray-300
+                focus:border-blue-300
+                focus:ring
+                focus:ring-blue-200
+                focus:ring-opacity-50
+              "
+              placeholder=""
+              value="{{title}}"
+              name="content_title"
+              required
+            />
+          </label>
+          {% for item in content %}
+          <label class="block">
+            <span class="text-gray-700">{{item[1]['title']}}</span>
+            {% if item[1]['type'] == "String" %}
+            <input
+              type="text"
+              class="
+                mt-1
+                block
+                w-full
+                rounded-md
+                border-gray-300
+                focus:border-blue-300
+                focus:ring
+                focus:ring-blue-200
+                focus:ring-opacity-50
+              "
+              placeholder=""
+              value="{{item[1]['value']}}"
+              name="{{item[0]}}"
+            />
+            {% endif %}
+            {% if item[1]['type'] == "String Array" %}
+            <small>(Comma separated values.)</small>
+            <input
+              type="text"
+              class="
+                mt-1
+                block
+                w-full
+                rounded-md
+                border-gray-300
+                focus:border-blue-300
+                focus:ring
+                focus:ring-blue-200
+                focus:ring-opacity-50
+              "
+              placeholder=""
+              value="{{item[1]['value']}}"
+              name="{{item[0]}}"
+            />
+            {% endif %} {% if item[1]['type'] == "Date" %}
+            <input
+              type="date"
+              class="
+                mt-1
+                block
+                w-full
+                rounded-md
+                border-gray-300
+                focus:border-blue-300
+                focus:ring
+                focus:ring-blue-200
+                focus:ring-opacity-50
+              "
+              placeholder="yyyy-mm-dd"
+              value="{{item[1]['value']}}"
+              name="{{item[0]}}"
+            />
+            {% endif %} {% if item[1]['type'] == "Number" %}
+            <input
+              type="number"
+              class="
+                mt-1
+                block
+                w-full
+                rounded-md
+                border-gray-300
+                focus:border-blue-300
+                focus:ring
+                focus:ring-blue-200
+                focus:ring-opacity-50
+              "
+              value="{{item[1]['value']}}"
+              name="{{item[0]}}"
+            />
+            {% endif %} {% if item[1]['type'] == "Colour" %}
+            <input
+              type="color"
+              class="
+                mt-1
+                block
+                w-full
+                rounded-md
+                border-gray-300
+                focus:border-blue-300
+                focus:ring
+                focus:ring-blue-200
+                focus:ring-opacity-50
+              "
+              value="{{item[1]['value']}}"
+              name="{{item[0]}}"
+            />
+            {% endif %} {% if item[1]['type'] == "Markdown" %}
+            <textarea name="{{item[0]}}" id="{{item[0]}}"></textarea>
+            <script>
+              var easyMDE{{item[0]}} = new EasyMDE({element: document.getElementById('{{item[0]}}'), initialValue: '{{item[1]['value']}}'});
+            </script>
+            {% endif %} {% if item[1]['type'] == "Files" %}
+            <small>(Deselect files to delete them.)</small>
+            <div id="{{item[0]}}-checkbox" class="mt-2">
+              {% for checkbox in item[1]['value'] %}
+              <a target="_blank" href="/file/{{checkbox}}">
+                  <input type="checkbox" id="{{item[0]}}-file-checkbox-{{checkbox}}" name="${id}-file-checkbox-{{checkbox}}" checked />
+                  <span for="{{item[0]}}-file-checkbox-{{checkbox}}">{{checkbox}}</span>
+              </a>
+              {% endfor %}
+            </div>
+            <script>
+              async function submitFilesForm(id) {
+                let formData = new FormData(
+                  document.getElementById("main-form")
+                );
+                const fileUploadPaths = await fetch(`/${id}-files-upload-box/filesJSON`, {
+                  method: "POST",
+                  body: formData,
+                }).then((r) => r.json());
+                document.getElementById(`${id}-checkbox`).innerHTML = `
+                  ${document.getElementById(`${id}-checkbox`).innerHTML}
+                  <a target="_blank" href="/file/${fileUploadPaths.file}">
+                    <input type="checkbox" id="${id}-file-checkbox-${
+                  fileUploadPaths.file
+                }" name="${id}-file-checkbox-${fileUploadPaths.file}" checked />
+                    <span for="${id}-file-checkbox-${fileUploadPaths.file}">${
+                  fileUploadPaths.file
+                }</span>
+                  </a>
+                `;
+              }
+            </script>
+            <label class="mt-2 block underline">
+              Add file
+              <input
+                type="file"
+                name="{{item[0]}}-files-upload-box"
+                onchange="submitFilesForm('{{item[0]}}')"
+                style="display: none;"
+              />
+            </label>
+            {% endif %}
+          </label>
+          {% endfor %}
+          <input
+            type="submit"
+            class="
+              mt-1
+              border
+              rounded-md
+              py-2
+              px-3
+              text-gray-100
+              border-gray-800
+              focus:border-blue-300
+              focus:ring
+              focus:ring-blue-200
+              focus:ring-opacity-50
+              text-left
+              bg-blue-600
+            "
+          />
+        </div>
+      </form>
+    </section>
+    {% include 'footer.html' %}
+  </body>
+</html>
