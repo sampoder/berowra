@@ -109,7 +109,7 @@
           bg-blue-600
         "
       >
-        {{ title }}
+        {{ title }} {{collectionIdDisplay}}
       </button>
 
       <div class="relative flex-grow mr-4">
@@ -150,7 +150,7 @@
           "
           type="text"
           aria-label="Filter content"
-          placeholder="Filter content"
+          placeholder="{{searchPlaceholder}}"
           id="search"
           name="search"
         />

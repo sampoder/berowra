@@ -26,11 +26,11 @@ def index():
     print(request.args.get('search'))
     items = collectionsDB.fetch({
         "titleCaps?contains": request.args.get('search').upper()
-    }if request.args.get('search') != None else {}, pages=1, buffer=50000)
+    }if request.args.get('search') != None and request.args.get('search').replace(' ', '') != '' else {}, pages=1, buffer=50000)
     for sub_list in items:
         items = sub_list
     print(items)
-    return render_template('index.html', collections=items)
+    return render_template('index.html', collections=items, searchPlaceholder=request.args.get('search')if request.args.get('search') != None and request.args.get('search').replace(' ', '') != '' else 'Filter results')
 
 
 @app.route("/<id>/filesJSON", methods=['GET', 'POST'])
@@ -76,11 +76,12 @@ def files():
             print(items)
             return render_template('files.html', title='Files', files=items['names'])
     items = drive.list()
-    if request.args.get('search') != None:
+    if request.args.get('search') != None and request.args.get('search').replace(' ', '') != '':
         print(items)
-        items = {'names': [a for a in items['names'] if request.args.get('search') in a]}
+        items = {'names': [a for a in items['names']
+                           if request.args.get('search').upper() in a.upper()]}
         print(items)
-    return render_template('files.html', title='Files', files=items['names'], filesPage=True, collection=False)
+    return render_template('files.html', title='Files', files=items['names'], filesPage=True, collection=False, searchPlaceholder=request.args.get('search')if request.args.get('search') != None and request.args.get('search').replace(' ', '') != '' else 'Filter results')
 
 
 @app.route("/api", methods=['GET', 'POST'])
@@ -122,11 +123,13 @@ def new():
 @app.route('/collection/<id>', methods=['GET'])
 def collection(id):
     data = collectionsDB.get(id)
-    items = contentDB.fetch({"collectionKey": id}, pages=1, buffer=50000)
+    items = contentDB.fetch({"collectionKey": id,
+                             "titleCaps?contains": request.args.get('search').upper()
+                             }if request.args.get('search') != None and request.args.get('search').replace(' ', '') != '' else {"collectionKey": id}, pages=1, buffer=50000)
     for sub_list in items:
         items = sub_list
     print(items)
-    return render_template("collection.html", title=data['title'], items=items, filesPage=False, collection=True, collectionId=id)
+    return render_template("collection.html", title=data['title'], items=items, filesPage=False, collection=True, collectionId=id, searchPlaceholder=request.args.get('search')if request.args.get('search') != None and request.args.get('search').replace(' ', '') != '' else 'Filter results', collectionIdDisplay='('+id+')')
 
 
 @app.route('/content/<id>', methods=['GET', 'POST'])
@@ -165,7 +168,7 @@ def content(id):
             else:
                 content[int(x[1][0])]['value'] = x[1][1]
         contentArray = list(content.items())
-        contentDB.update({'content': content, 'title': title,
+        contentDB.update({'content': content, 'title': title, 'titleCaps': title.upper(),
                          "lastUpdated": str(datetime.datetime.now(utc))}, id)
     getContentData = contentDB.get(id)
     getCollectionData = collectionsDB.get(getContentData['collectionKey'])
@@ -181,7 +184,7 @@ def content(id):
                 getContent[int(x['id'])] = x
     getContentArray = list(getContent.items())
     print(getContentArray)
-    return render_template('edit.html', content=getContentArray, title=getContentData['title'])
+    return render_template('edit.html', content=getContentArray, title=getContentData['title'], contentId=id)
 
 
 @app.route('/collection/<id>/new', methods=['GET', 'POST'])

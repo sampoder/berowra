@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     {% include 'header.html' %}
+    <link rel="stylesheet" href="/static/easymde.min.css">
   </head>
   <body>
     {% include 'nav.html' %}
@@ -20,6 +21,7 @@
       "
     >
       <h2 class="text-2xl font-bold">Edit Content</h2>
+      <small>{{contentId}}</small>
       <form method="post" class="mt-8 max-w-xl" id="main-form">
         <div class="grid grid-cols-1 gap-6">
           <label class="block">
@@ -206,6 +208,7 @@
         </div>
       </form>
     </section>
+    <script src="/static/easymde.min.js"></script>
     {% include 'footer.html' %}
   </body>
 </html>
