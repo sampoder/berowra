@@ -81,6 +81,10 @@ def files():
 def api():
     return render_template('api.html')
 
+@app.route("/home", methods=['GET', 'POST'])
+def home():
+    return render_template('home.html')
+
 
 @app.route('/new', methods=['GET', 'POST'])
 def new():
@@ -180,7 +184,19 @@ def apiContent(id):
 @app.route('/api/collection/<id>', methods=['GET'])
 def apiCollection(id):
     data = collectionsDB.get(id)
-    items = contentDB.fetch({"collectionKey": id}, pages=1, buffer=50000)
+    detaQuery = request.args.to_dict()
+    print(detaQuery)
+    detaQuery['collectionKey'] = id
+    items = contentDB.fetch(detaQuery, pages=1, buffer=50000)
+    for sub_list in items:
+        items = sub_list
+    return jsonify(items)
+
+@app.route('/api/collections', methods=['GET'])
+def apiCollections():
+    detaQuery = request.args.to_dict()
+    print(detaQuery)
+    items = collectionsDB.fetch(detaQuery, pages=1, buffer=50000)
     for sub_list in items:
         items = sub_list
     return jsonify(items)
