@@ -25,12 +25,13 @@ ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 def index():
     print(request.args.get('search'))
     items = collectionsDB.fetch({
-        "title?contains": request.args.get('search')
+        "titleCaps?contains": request.args.get('search').upper()
     }if request.args.get('search') != None else {}, pages=1, buffer=50000)
     for sub_list in items:
         items = sub_list
     print(items)
     return render_template('index.html', collections=items)
+
 
 @app.route("/<id>/filesJSON", methods=['GET', 'POST'])
 def filesJSON(id):
@@ -54,6 +55,7 @@ def filesJSON(id):
     print(items)
     return render_template('files.html', title='Files', files=items['names'], filesPage=True, collection=False)
 
+
 @app.route("/files", methods=['GET', 'POST'])
 def files():
     if request.method == 'POST':
@@ -74,12 +76,17 @@ def files():
             print(items)
             return render_template('files.html', title='Files', files=items['names'])
     items = drive.list()
-    print(items)
+    if request.args.get('search') != None:
+        print(items)
+        items = {'names': [a for a in items['names'] if request.args.get('search') in a]}
+        print(items)
     return render_template('files.html', title='Files', files=items['names'], filesPage=True, collection=False)
+
 
 @app.route("/api", methods=['GET', 'POST'])
 def api():
     return render_template('api.html')
+
 
 @app.route("/home", methods=['GET', 'POST'])
 def home():
@@ -103,6 +110,7 @@ def new():
             finalData[x]['id'] = random.randint(0, 10000000000000)
         collectionsDB.insert({
             "title": request.form['title'],
+            "titleCaps": request.form['title'].upper(),
             "templateItems": finalData,
             "lastUpdated": str(datetime.datetime.now(utc))
         })
@@ -147,13 +155,18 @@ def content(id):
                 content[int(x[1][0].split('-file-checkbox-')[0])]['value'] = []
                 if x[1][1] == 'on':
                     if "value" in content[int(x[1][0].split('-file-checkbox-')[0])]:
-                        content[int(x[1][0].split('-file-checkbox-')[0])]['value'].append(x[1][0].split('-file-checkbox-')[1])
+                        content[int(x[1][0].split('-file-checkbox-')[0])
+                                ]['value'].append(x[1][0].split('-file-checkbox-')[1])
                     else:
-                        content[int(x[1][0].split('-file-checkbox-')[0])]['value'] = [x[1][0].split('-file-checkbox-')[1]]              
+                        content[int(x[1][0].split('-file-checkbox-')[0])
+                                ]['value'] = [x[1][0].split('-file-checkbox-')[1]]
+            elif content[int(x[1][0])]["type"] == 'String Array':
+                content[int(x[1][0])]['value'] = x[1][1].split(',')
             else:
                 content[int(x[1][0])]['value'] = x[1][1]
         contentArray = list(content.items())
-        contentDB.update({'content': content, 'title': title, "lastUpdated": str(datetime.datetime.now(utc))}, id)
+        contentDB.update({'content': content, 'title': title,
+                         "lastUpdated": str(datetime.datetime.now(utc))}, id)
     getContentData = contentDB.get(id)
     getCollectionData = collectionsDB.get(getContentData['collectionKey'])
     getContent = getContentData['content']
@@ -170,16 +183,20 @@ def content(id):
     print(getContentArray)
     return render_template('edit.html', content=getContentArray, title=getContentData['title'])
 
+
 @app.route('/collection/<id>/new', methods=['GET', 'POST'])
 def newContent(id):
-    res = contentDB.insert({"collectionKey": id, "content": {}, "title": "Unnamed Content"})
+    res = contentDB.insert(
+        {"collectionKey": id, "content": {}, "title": "Unnamed Content"})
     print(res)
     return redirect('/content/'+res['key'])
+
 
 @app.route('/api/content/<id>', methods=['GET'])
 def apiContent(id):
     getContentData = contentDB.get(id)
     return jsonify(getContentData)
+
 
 @app.route('/api/collection/<id>', methods=['GET'])
 def apiCollection(id):
@@ -191,6 +208,7 @@ def apiCollection(id):
     for sub_list in items:
         items = sub_list
     return jsonify(items)
+
 
 @app.route('/api/collections', methods=['GET'])
 def apiCollections():

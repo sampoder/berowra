@@ -81,7 +81,7 @@
                 focus:ring-opacity-50
               "
               placeholder=""
-              value="{{item[1]['value']}}"
+              value="{{item[1]['value']|join(',')}}"
               name="{{item[0]}}"
             />
             {% endif %} {% if item[1]['type'] == "Date" %}
