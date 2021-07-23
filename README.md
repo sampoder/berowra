@@ -8,6 +8,6 @@ Berowra has the following features:
 - Upload files and host them on Deta Base
 - Fetch your content with a great API
 
-This project is split into two parts: `web` and `api`. `web` contains almost all of the application built with Python & Flask and `api` contains the code for the API built in Node.js.
+This project is built with Python & Flask.
 
 If you require support or locate a bug please open a GitHub Issue [here](https://github.com/sampoder/berowra/issues/new/choose).
