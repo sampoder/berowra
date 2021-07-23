@@ -2,7 +2,6 @@
 <html lang="en">
   <head>
     {% include 'header.html' %}
-    <link rel="stylesheet" href="/static/easymde.min.css">
   </head>
   <body>
     {% include 'nav.html' %}
@@ -45,6 +44,13 @@
               required
             />
           </label>
+          
+          <span for="published-checkbox">Published? <input
+            type="checkbox"
+            id="published-checkbox"
+            name="published-checkbox"
+            {{published}}
+          /></span>
           {% for item in content %}
           <label class="block">
             <span class="text-gray-700">{{item[1]['title']}}</span>
@@ -66,8 +72,7 @@
               value="{{item[1]['value']}}"
               name="{{item[0]}}"
             />
-            {% endif %}
-            {% if item[1]['type'] == "String Array" %}
+            {% endif %} {% if item[1]['type'] == "String Array" %}
             <small>(Comma separated values.)</small>
             <input
               type="text"
@@ -141,15 +146,28 @@
             {% endif %} {% if item[1]['type'] == "Markdown" %}
             <textarea name="{{item[0]}}" id="{{item[0]}}"></textarea>
             <script>
-              var easyMDE{{item[0]}} = new EasyMDE({element: document.getElementById('{{item[0]}}'), initialValue: '{{item[1]['value']}}'});
+              (async() => {
+                  console.log("waiting for variable");
+                  while(typeof EasyMDE == 'undefined') // define the condition as you like
+                      await new Promise(resolve => setTimeout(resolve, 1000));
+                      var easyMDE{{item[0]}} = new EasyMDE({element: document.getElementById('{{item[0]}}'), initialValue: '{{item[1]['value']}}'});
+              })();
+              
             </script>
             {% endif %} {% if item[1]['type'] == "Files" %}
             <small>(Deselect files to delete them.)</small>
             <div id="{{item[0]}}-checkbox" class="mt-2">
               {% for checkbox in item[1]['value'] %}
               <a target="_blank" href="/file/{{checkbox}}">
-                  <input type="checkbox" id="{{item[0]}}-file-checkbox-{{checkbox}}" name="${id}-file-checkbox-{{checkbox}}" checked />
-                  <span for="{{item[0]}}-file-checkbox-{{checkbox}}">{{checkbox}}</span>
+                <input
+                  type="checkbox"
+                  id="{{item[0]}}-file-checkbox-{{checkbox}}"
+                  name="${id}-file-checkbox-{{checkbox}}"
+                  checked
+                />
+                <span for="{{item[0]}}-file-checkbox-{{checkbox}}"
+                  >{{checkbox}}</span
+                >
               </a>
               {% endfor %}
             </div>
@@ -158,10 +176,13 @@
                 let formData = new FormData(
                   document.getElementById("main-form")
                 );
-                const fileUploadPaths = await fetch(`/${id}-files-upload-box/filesJSON`, {
-                  method: "POST",
-                  body: formData,
-                }).then((r) => r.json());
+                const fileUploadPaths = await fetch(
+                  `/${id}-files-upload-box/filesJSON`,
+                  {
+                    method: "POST",
+                    body: formData,
+                  }
+                ).then((r) => r.json());
                 document.getElementById(`${id}-checkbox`).innerHTML = `
                   ${document.getElementById(`${id}-checkbox`).innerHTML}
                   <a target="_blank" href="/file/${fileUploadPaths.file}">
@@ -181,7 +202,7 @@
                 type="file"
                 name="{{item[0]}}-files-upload-box"
                 onchange="submitFilesForm('{{item[0]}}')"
-                style="display: none;"
+                style="display: none"
               />
             </label>
             {% endif %}
@@ -208,7 +229,6 @@
         </div>
       </form>
     </section>
-    <script src="/static/easymde.min.js"></script>
     {% include 'footer.html' %}
   </body>
 </html>

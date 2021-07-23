@@ -11,7 +11,7 @@ load_dotenv()
 
 app = Flask(__name__)
 
-deta = Deta(os.getenv("DETA_KEY"))
+deta = Deta()
 
 utc = pytz.utc
 
@@ -149,9 +149,12 @@ def content(id):
                 if 'title' in x and x['id'] not in content:
                     content[x['id']] = x
         title = ""
+        published = False
         for x in enumerate(formData):
             if x[1][0] == 'content_title':
                 title = x[1][1]
+            elif x[1][0] == 'published-checkbox':
+                published = True
             elif '-files-upload-box' in x[1][0]:
                 print('skipping')
             elif '-file-checkbox-' in x[1][0]:
@@ -168,7 +171,7 @@ def content(id):
             else:
                 content[int(x[1][0])]['value'] = x[1][1]
         contentArray = list(content.items())
-        contentDB.update({'content': content, 'title': title, 'titleCaps': title.upper(),
+        contentDB.update({'content': content, 'published': published, 'title': title, 'titleCaps': title.upper(),
                          "lastUpdated": str(datetime.datetime.now(utc))}, id)
     getContentData = contentDB.get(id)
     getCollectionData = collectionsDB.get(getContentData['collectionKey'])
@@ -184,13 +187,13 @@ def content(id):
                 getContent[int(x['id'])] = x
     getContentArray = list(getContent.items())
     print(getContentArray)
-    return render_template('edit.html', content=getContentArray, title=getContentData['title'], contentId=id)
+    return render_template('edit.html', content=getContentArray, title=getContentData['title'], published="checked"if getContentData['published'] == True else "", contentId=id)
 
 
 @app.route('/collection/<id>/new', methods=['GET', 'POST'])
 def newContent(id):
     res = contentDB.insert(
-        {"collectionKey": id, "content": {}, "title": "Unnamed Content"})
+        {"collectionKey": id, "content": {}, "title": "Unnamed Content", "published": False})
     print(res)
     return redirect('/content/'+res['key'])
 
