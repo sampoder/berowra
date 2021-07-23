@@ -86,7 +86,15 @@ def files():
 
 @app.route("/api", methods=['GET', 'POST'])
 def api():
-    return render_template('api.html')
+    items = collectionsDB.fetch({}, pages=1, buffer=50000)
+    for sub_list in items:
+        items = sub_list
+    contentItems = contentDB.fetch({"collectionKey": items[0]["key"]}, pages=1, buffer=50000)
+    print(contentItems)
+    for sub_list in contentItems:
+        contentItems = sub_list
+    print(contentItems)
+    return render_template('api.html', collections=items, exampleKey = contentItems[0]['key'] if len(contentItems) > 0 else None)
 
 
 @app.route("/home", methods=['GET', 'POST'])
@@ -201,29 +209,61 @@ def newContent(id):
 @app.route('/api/content/<id>', methods=['GET'])
 def apiContent(id):
     getContentData = contentDB.get(id)
-    return jsonify(getContentData)
+    return jsonify({
+        "collectionKey": getContentData["collectionKey"],
+        "content": getContentData["content"],
+        "lastUpdated": getContentData["lastUpdated"],
+        "title": getContentData["title"]
+    })
 
 
 @app.route('/api/collection/<id>', methods=['GET'])
 def apiCollection(id):
+    includeContent = False
+
+    def formatItem(n):
+        return {"key": n["key"],
+                "lastUpdated": n["lastUpdated"],
+                "title": n['title']} if includeContent == False else {"key": n["key"],
+                                                                      "lastUpdated": n["lastUpdated"],
+                                                                      "title": n['title'], 'content': n['content']}
     data = collectionsDB.get(id)
-    detaQuery = request.args.to_dict()
-    print(detaQuery)
+    providedDetaQuery = request.args.to_dict()
+    detaQuery = {}
+    for x in providedDetaQuery:
+        detaQuery[x.replace('!', '?')] = providedDetaQuery[x]
     detaQuery['collectionKey'] = id
+    detaQuery['published'] = True
+    if 'content' in detaQuery:
+        includeContent = True
+    detaQuery.pop('content', None)
     items = contentDB.fetch(detaQuery, pages=1, buffer=50000)
     for sub_list in items:
         items = sub_list
-    return jsonify(items)
+    return jsonify({"title": data["title"], "items": list(map(formatItem, items))})
 
 
 @app.route('/api/collections', methods=['GET'])
 def apiCollections():
-    detaQuery = request.args.to_dict()
+    includeTemplate = False
+    def formatItem(n):
+        return {"key": n["key"],
+                "lastUpdated": n["lastUpdated"],
+                "title": n['title']} if includeTemplate == False else {"key": n["key"],
+                                                                       "lastUpdated": n["lastUpdated"],
+                                                                       "title": n['title'], 'templateItems': n['templateItems']}
+    providedDetaQuery = request.args.to_dict()
+    detaQuery = {}
+    for x in providedDetaQuery:
+        detaQuery[x.replace('!', '?')] = providedDetaQuery[x]
+    if 'template' in detaQuery:
+        includeTemplate = True
+    detaQuery.pop('template', None)
     print(detaQuery)
     items = collectionsDB.fetch(detaQuery, pages=1, buffer=50000)
     for sub_list in items:
         items = sub_list
-    return jsonify(items)
+    return jsonify(list(map(formatItem, items)))
 
 
 @app.route('/file/<id>', methods=['GET'])

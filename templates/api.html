@@ -5,14 +5,105 @@
   </head>
   <body>
     {% include 'nav.html' %}
-    <p class="mt-2">API is a WIP.</p>
-    <p  class="mt-2">
-      Send a request for an entire collection use
-      <code class="bg-gray-300">/api/collection/&lt;id&gt;</code>
+    <h1 class="mt-4 text-4xl font-bold">API Docs</h1>
+    <p class="mt-2">
+      We offer a REST based API for you to access all of your content and files.
+      Learn how to down below!
+    </p>
+    <h1 class="mt-4 text-2xl font-bold">Accessing Collection List</h1>
+    <p class="mt-2">
+      A list of collections can be accessed at
+      <a href="/api/collections"
+        ><code class="bg-gray-300 rounded-md p-1 border-2 border-blue-600"
+          >/api/collections</code
+        ></a
+      >. If you would like the result objects to include the templates, append
+      <code class="bg-gray-300 rounded-md p-1">?template</code> to your query
+      URL.
+    </p>
+    <h1 class="mt-4 text-2xl font-bold">Accessing Individual Collections</h1>
+    <p class="mt-2">
+      All the data associated with an individual collection can be accessed by
+      going to
+      <code class="bg-gray-300 rounded-md p-1"
+        >/api/collection/&lt;collection-id&gt;</code
+      >. If you would like the result objects to include the content of each
+      item in a collection, append
+      <code class="bg-gray-300 rounded-md p-1">?content</code> to your query
+      URL.
     </p>
     <p class="mt-2">
-      Send a request for a single piece of content use
-      <code class="bg-gray-300">/api/content/&lt;id&gt;</code>
+      For your instance of Berowra, you have the following collections:
     </p>
+    {% for item in collections %}
+      <p class="mt-2">
+       {{item.title}}: <a href="/api/collection/{{item.key}}"><code class="bg-gray-300 rounded-md p-1 border-2 border-blue-600""
+        >/api/collection/{{item.key}}</code
+      ></a>
+      </p>
+    {% endfor %} 
+    <h1 class="mt-4 text-2xl font-bold">Accessing Individual Content</h1>
+    <p class="mt-2">
+      Send a request for a single piece of content use
+      <code class="bg-gray-300 rounded-md p-1"
+        >/api/content/&lt;content-id&gt;</code
+      >. This ID can be found in the above API responses or on the Edit Content
+      page. {% if exampleKey is not none %} An example API call is:
+      <a href="/api/content/{{exampleKey}}"><code class="bg-gray-300 rounded-md p-1 border-2 border-blue-600"
+        >/api/content/{{exampleKey}}</code
+      ></a>.{% endif %}
+    </p>
+    <h1 class="mt-4 text-2xl font-bold">Filtering</h1>
+    <p class="mt-2">
+      With the API, you can sort the collection list and sort the content
+      returned in an individual collection. This is done through a set of URL
+      queries, the supported ones are as follows:
+      <p class="mt-2">
+        Equals: <code class="bg-gray-300 rounded-md p-1"
+        >?author=John</code
+      >
+      <p class="mt-2">
+        Not Equals: <code class="bg-gray-300 rounded-md p-1"
+        >?author!ne=John</code
+      >
+      </p>
+      <p class="mt-2">
+        Less Than: <code class="bg-gray-300 rounded-md p-1"
+        >?stars!lt=22</code
+      ></p>
+      <p class="mt-2">
+        Greater Than: <code class="bg-gray-300 rounded-md p-1"
+        >?stars!gt=22</code
+      ></p>
+      <p class="mt-2">
+        Less Than or Equal: <code class="bg-gray-300 rounded-md p-1"
+        >?stars!lte=22</code
+      ></p>
+      <p class="mt-2">
+        Greater Than or Equal: <code class="bg-gray-300 rounded-md p-1"
+        >?stars!gte=22</code
+      ></p>
+      <p class="mt-2">
+        Prefix: <code class="bg-gray-300 rounded-md p-1"
+        >?title!pfx=2021</code
+      ></p>
+      <p class="mt-2">
+        Contains: <code class="bg-gray-300 rounded-md p-1"
+        >?tags!contains=2021</code
+      ></p>
+      <p class="mt-2">
+        Does Not Contain: <code class="bg-gray-300 rounded-md p-1"
+        >?tags!not_contains=2020</code
+      ></p>
+    </p>
+    <h1 class="mt-4 text-2xl font-bold">Files</h1>
+    <p class="mt-2">
+      For any files returned by the API, prepend <code class="bg-gray-300 rounded-md p-1"
+      >/file/</code> and the host URL to get a web URL.</p>
+    <style>
+      p {
+        line-height: 1.9;
+      }
+    </style>
   </body>
 </html>
