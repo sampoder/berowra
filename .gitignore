@@ -1,6 +1,6 @@
 .deta
 .vscode
 .DS_Store
-web/static/tailwind-dev.css
+static/tailwind-dev.css
 node_modules
-web/templates/testing-files.html
+templates/testing-files.html
