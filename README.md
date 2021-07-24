@@ -18,6 +18,11 @@ Berowra has the following features:
 | ![](https://cloud-cusao41w8-hack-club-bot.vercel.app/3screenshot_2021-07-24_at_1.04.53_pm.png) <strong>Create A New Item</strong> | ![](https://cloud-cusao41w8-hack-club-bot.vercel.app/0screenshot_2021-07-24_at_12.53.23_pm.png)<strong>Fill In The Template</strong>  |
 |--|--|
 
+Then you can write:
+
+```javascript
+let posts = await fetch("https://berowra.deta.dev/api/collection/e0qgx9nelbms".then(r => r.json())
+```
 
 ## Contributing
 
