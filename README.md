@@ -1,6 +1,6 @@
 # 🔵 Berowra CMS & CDN
 
-With Berowra you can get a CMS & CDN up in a minute, not a day. Through Deta Space, Berowra gives you the control of self hosting without any need for infrastructure maintenance. It's easy to use, flexible and completely free.
+With Berowra you can get a CMS & CDN up in a minute, not a day. Through Deta Space, Berowra gives you the control of self hosting without any need for infrastructure maintenance. It's easy to use, flexible and completely free. Berowra was built during [Deta VC](https://deta.vc)
 
 Berowra has the following features:
 
