@@ -6,15 +6,18 @@ Berowra has the following features:
 
 - Build collections of content pieces
 - Use multiple field types in your content pieces
-  - Short Strings
-  - Numbers
-  - Longer Strings with Markdown
-  - Dates
-  - String Arrays
-  - Files
-  - Colours
 - Upload files and host them on Deta Base
 - Fetch your content with a great API
+
+## The Publishing Process 
+
+
+|![](https://cloud-cusao41w8-hack-club-bot.vercel.app/2screenshot_2021-07-24_at_12.48.29_pm.png) Create A New Collection  | ![](https://cloud-cusao41w8-hack-club-bot.vercel.app/1screenshot_2021-07-24_at_12.49.06_pm.png) Add The Template |
+|--|--|
+
+| ![](https://cloud-cusao41w8-hack-club-bot.vercel.app/3screenshot_2021-07-24_at_1.04.53_pm.png) <strong>Create A New Item</strong> | ![](https://cloud-cusao41w8-hack-club-bot.vercel.app/0screenshot_2021-07-24_at_12.53.23_pm.png)<strong>Fill In The Template</strong>  |
+|--|--|
+
 
 ## Contributing
 
