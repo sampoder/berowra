@@ -44,4 +44,6 @@ NODE_ENV=production npx tailwindcss -o static/tailwind.css --minify
 
 Now, you're all set to get coding!
 
+If you are looking for the landing page, check out https://github.com/sampoder/berowra-landing.
+
 If you require support or locate a bug please open a GitHub Issue [here](https://github.com/sampoder/berowra/issues/new/choose).
