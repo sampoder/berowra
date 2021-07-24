@@ -24,13 +24,13 @@ To run it, first create a project and find your project ID from the `Settings` p
 
 If you plan to make changes to the styles, first run:
 
-```
+```shell
 npx tailwindcss -o static/tailwind-dev.css
 ```
 
 This will make a version of Tailwind with all the styles. Then when you plan to push run:
 
-```
+```shell
 NODE_ENV=production npx tailwindcss -o static/tailwind.css --minify  
 ```
 
