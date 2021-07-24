@@ -97,7 +97,7 @@ def api():
     return render_template('api.html', collections=items, exampleKey = contentItems[0]['key'] if len(contentItems) > 0 else None)
 
 
-@app.route("/home", methods=['GET', 'POST'])
+@app.route("/home", methods=['GET'])
 def home():
     return render_template('home.html')
 
