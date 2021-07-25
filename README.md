@@ -21,7 +21,7 @@ Berowra has the following features:
 Then you can write:
 
 ```javascript
-let posts = await fetch("https://berowra.deta.dev/api/collection/e0qgx9nelbms".then(r => r.json())
+let posts = await fetch("https://berowra.deta.dev/api/collection/e0qgx9nelbms").then(r => r.json()
 ```
 
 ## Contributing
