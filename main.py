@@ -1,5 +1,5 @@
 from typing import Collection
-from flask import Flask, request, redirect, url_for, render_template, send_file, jsonify
+from flask import Flask, request, redirect, url_for, render_template, send_file, jsonify, make_response
 from deta import Deta
 from dotenv import load_dotenv
 import os
@@ -30,8 +30,10 @@ def index():
     for sub_list in items:
         items = sub_list
     print(items)
-    return render_template('index.html', collections=items, searchPlaceholder=request.args.get('search')if request.args.get('search') != None and request.args.get('search').replace(' ', '') != '' else 'Filter results')
-
+    r = make_response(render_template('index.html', collections=items, searchPlaceholder=request.args.get(
+        'search')if request.args.get('search') != None and request.args.get('search').replace(' ', '') != '' else 'Filter results'))
+    r.headers.set('cache-control', 'no-store')
+    return r
 
 @app.route("/<id>/filesJSON", methods=['GET', 'POST'])
 def filesJSON(id):
@@ -89,12 +91,13 @@ def api():
     items = collectionsDB.fetch({}, pages=1, buffer=50000)
     for sub_list in items:
         items = sub_list
-    contentItems = contentDB.fetch({"collectionKey": items[0]["key"]}, pages=1, buffer=50000)
+    contentItems = contentDB.fetch(
+        {"collectionKey": items[0]["key"]}, pages=1, buffer=50000)
     print(contentItems)
     for sub_list in contentItems:
         contentItems = sub_list
     print(contentItems)
-    return render_template('api.html', collections=items, exampleKey = contentItems[0]['key'] if len(contentItems) > 0 else None)
+    return render_template('api.html', collections=items, exampleKey=contentItems[0]['key'] if len(contentItems) > 0 else None)
 
 
 @app.route("/home", methods=['GET'])
@@ -201,7 +204,7 @@ def content(id):
 @app.route('/collection/<id>/new', methods=['GET', 'POST'])
 def newContent(id):
     res = contentDB.insert(
-        {"collectionKey": id, "content": {}, "title": "Unnamed Content", "published": False})
+        {"collectionKey": id, "content": {}, "title": "Unnamed Content", "published": False, "lastUpdated": str(datetime.datetime.now(utc))})
     print(res)
     return redirect('/content/'+res['key'])
 
@@ -246,6 +249,7 @@ def apiCollection(id):
 @app.route('/api/collections', methods=['GET'])
 def apiCollections():
     includeTemplate = False
+
     def formatItem(n):
         return {"key": n["key"],
                 "lastUpdated": n["lastUpdated"],
