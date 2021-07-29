@@ -1,4 +1,4 @@
-# 🔵 Berowra CMS & CDN
+# 🔵 Berowra
 
 > Install Berowra @ https://deta.space/discovery/berowra!
 
