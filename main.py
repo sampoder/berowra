@@ -94,11 +94,14 @@ def api():
     items = collectionsDB.fetch({}, pages=1, buffer=50000)
     for sub_list in items:
         items = sub_list
-    contentItems = contentDB.fetch(
-        {"collectionKey": items[0]["key"]}, pages=1, buffer=50000)
-    print(contentItems)
-    for sub_list in contentItems:
-        contentItems = sub_list
+    try:
+        contentItems = contentDB.fetch(
+            {"collectionKey": items[0]["key"]}, pages=1, buffer=50000)
+        print(contentItems)
+        for sub_list in contentItems:
+            contentItems = sub_list
+    except:
+        contentItems = []    
     print(contentItems)
     return render_template('api.html', collections=items, exampleKey=contentItems[0]['key'] if len(contentItems) > 0 else None)
 
@@ -181,6 +184,7 @@ def content(id):
         contentArray = list(content.items())
         contentDB.update({'content': content, 'published': published, 'title': title, 'titleCaps': title.upper(),
                          "lastUpdated": str(datetime.datetime.now(utc))}, id)
+        return redirect(f"{path}{host}/collection/{contentData['collectionKey']}")
     getContentData = contentDB.get(id)
     getCollectionData = collectionsDB.get(getContentData['collectionKey'])
     getContent = getContentData['content']
