@@ -9,6 +9,9 @@ import pytz
 import random
 load_dotenv()
 
+path = "" if os.getenv("LOCAL_DEV") else "https://" + os.getenv("DETA_PATH")
+host = ".deta.app" if os.getenv("DETA_SPACE_APP") else "" if os.getenv("LOCAL_DEV") else ".deta.dev"
+
 app = Flask(__name__)
 
 deta = Deta()
@@ -99,12 +102,6 @@ def api():
     print(contentItems)
     return render_template('api.html', collections=items, exampleKey=contentItems[0]['key'] if len(contentItems) > 0 else None)
 
-
-@app.route("/home", methods=['GET'])
-def home():
-    return render_template('home.html')
-
-
 @app.route('/new', methods=['GET', 'POST'])
 def new():
     if request.method == 'POST':
@@ -126,7 +123,7 @@ def new():
             "templateItems": finalData,
             "lastUpdated": str(datetime.datetime.now(utc))
         })
-        return redirect('/')
+        return redirect(f"{path}{host}/")
     else:
         return render_template('new.html')
 
@@ -206,7 +203,7 @@ def newContent(id):
     res = contentDB.insert(
         {"collectionKey": id, "content": {}, "title": "Unnamed Content", "published": False, "lastUpdated": str(datetime.datetime.now(utc))})
     print(res)
-    return redirect('/content/'+res['key'])
+    return redirect(f"{path}{host}/content/" +res['key'])
 
 
 @app.route('/api/content/<id>', methods=['GET'])
