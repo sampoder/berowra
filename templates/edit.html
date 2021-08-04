@@ -150,7 +150,7 @@
                   console.log("waiting for variable");
                   while(typeof EasyMDE == 'undefined') // define the condition as you like
                       await new Promise(resolve => setTimeout(resolve, 1000));
-                      var easyMDE{{item[0]}} = new EasyMDE({element: document.getElementById('{{item[0]}}'), initialValue: '{{item[1]['value']}}'});
+                      var easyMDE{{item[0]}} = new EasyMDE({element: document.getElementById('{{item[0]}}'), initialValue: `{{item[1]['value']}}`});
               })();
               
             </script>
