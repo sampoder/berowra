@@ -3,8 +3,8 @@
 ## Product
 
 - [ ]  Homepage copy feedback (Max needs to give Sam)
-- [ ]  GitHub Repo 'Install on Space' button
-- [x]  Guide: create and use your first content 
+- [x]  GitHub Repo 'Install on Space' button
+- [ ]  Guide: create and use your first content 
 - [ ]  delete (I personally think this is cool but less important at the moment)
 
 ## Product Hunt (9 or 9:30am Berlin time)
