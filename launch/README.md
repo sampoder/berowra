@@ -10,7 +10,7 @@
 ## Product Hunt (9 or 9:30am Berlin time)
 
 - [x]  Look at other successful posts (Prisma, etc)
-- [ ]  Description
+- [x]  Description
 - [ ]  Pictures
 - [ ]  Video (30 seconds)?
 - [x]  Comment from Maker 
@@ -20,4 +20,4 @@
 ## HNews (Show HN)
 
 - [x] look at the Show rules (https://news.ycombinator.com/showhn.html)
-- [ ] create a comment about why & how you built Berowra 
+- [x] create a comment about why & how you built Berowra 
