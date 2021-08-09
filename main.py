@@ -142,6 +142,16 @@ def collection(id):
     print(items)
     return render_template("collection.html", title=data['title'], items=items, filesPage=False, collection=True, collectionId=id, searchPlaceholder=request.args.get('search')if request.args.get('search') != None and request.args.get('search').replace(' ', '') != '' else 'Filter results', collectionIdDisplay='('+id+')')
 
+@app.route('/collection/<id>/delete', methods=['GET'])
+def collectionDelete(id):
+    collectionsDB.delete(id)
+    return redirect(f"{path}{host}/")
+
+@app.route('/content/<id>/delete', methods=['GET'])
+def contentDelete(id):
+    contentData = contentDB.get(id)
+    contentDB.delete(id)
+    return redirect(f"{path}{host}/collection/"+contentData['collectionKey'])
 
 @app.route('/content/<id>', methods=['GET', 'POST'])
 def content(id):

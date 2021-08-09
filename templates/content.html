@@ -34,9 +34,7 @@
     </dl>
   </a>
 </li>
-{% endmacro %}
-
-{% macro file(title, color, key, lastUpdated, url) %}
+{% endmacro %} {% macro file(title, color, key, lastUpdated, url) %}
 <li>
   <a
     href="{{url}}"
@@ -175,12 +173,17 @@
           "
         >
           Create New
-      </div>
-        <input type="file" name="file" id="upload" style="display: none" onchange="form.submit()" />
+        </div>
+        <input
+          type="file"
+          name="file"
+          id="upload"
+          style="display: none"
+          onchange="form.submit()"
+        />
       </label>
     </form>
-    {% endif %}
-    {% if collection is true %}
+    {% endif %} {% if collection is true %}
     <div class="relative flex">
       <a href="{{collectionId}}/new" data-no-instant>
         <div
@@ -199,18 +202,37 @@
           "
         >
           Create New
+        </div>
+      </a>
+    </div>
+    {% endif %} {% if collection is true %}
+    <div class="relative flex">
+      <div
+        class="
+          py-2
+          px-3
+          rounded-md
+          text-gray-100
+          focus:border-blue-300
+          focus:ring
+          focus:ring-blue-200
+          focus:ring-opacity-50
+          text-left
+          bg-red-600
+          cursor-pointer
+          ml-3
+        "
+        onclick='if (window.confirm("Do you really want to delete this collection?")) { window.location.assign("{{collectionId}}/delete");}'
+      >
+        Delete
       </div>
-    </a>
-  </div>
+    </div>
     {% endif %}
   </div>
 
   <ul class="grid grid-cols-1 gap-4">
-    {% for item in files %} 
-      {{ file(item, 'green-500', item, '', '/file/'+item) }} 
-    {% endfor %}
-    {% for item in items %} 
-      {{content(item.title, 'green-500', item, item.lastUpdated, '/content/'+item.key) }} 
-    {% endfor %}
+    {% for item in files %} {{ file(item, 'green-500', item, '', '/file/'+item)
+    }} {% endfor %} {% for item in items %} {{content(item.title, 'green-500',
+    item, item.lastUpdated, '/content/'+item.key) }} {% endfor %}
   </ul>
 </section>

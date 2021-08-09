@@ -22,7 +22,7 @@
       <h2 class="text-2xl font-bold">Edit Content</h2>
       <small>{{contentId}}</small>
       <form method="post" class="mt-8 max-w-xl" id="main-form">
-        <div class="grid grid-cols-1 gap-6">
+        <div class="grid grid-cols-1 gap-4">
           <label class="block">
             <span class="text-gray-700">Content Title</span>
             <input
@@ -220,15 +220,24 @@
               py-2
               px-3
               text-gray-100
-              border-gray-800
-              focus:border-blue-300
-              focus:ring
-              focus:ring-blue-200
-              focus:ring-opacity-50
               text-left
               bg-blue-600
             "
           />
+          <button
+            type="button"
+            class="
+              mt-0
+              border
+              rounded-md
+              py-2
+              px-3
+              text-gray-100
+              text-left
+              bg-red-600
+            "
+            onclick='if (window.confirm("Do you really want to delete this collection?")) { window.location.assign("{{contentId}}/delete");}'
+          >Delete Content</button>
         </div>
       </form>
     </section>
