@@ -1,1 +1,1 @@
-👋 Hi! I need to finish this.
+Berowra is a CMS for hobbyists and small buisnesses that enables them to start building on top of their content in just three minutes. It comes with a well documented API, file hosting, Markdown support and more! 
