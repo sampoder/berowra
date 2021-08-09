@@ -54,8 +54,8 @@ def filesJSON(id):
         if file:
             filename = secure_filename(file.filename)
             date = str(datetime.datetime.now(utc))
-            res = drive.put(date + filename, file)
-            return {'file': date + filename}
+            res = drive.put(date.replace(' ', '') + filename, file)
+            return {'file': date.replace(' ', '') + filename}
     items = drive.list()
     print(items)
     return render_template('files.html', title='Files', files=items['names'], filesPage=True, collection=False)
@@ -76,7 +76,7 @@ def files():
             return redirect(request.url)
         if file:
             filename = secure_filename(file.filename)
-            res = drive.put(str(datetime.datetime.now(utc)) + filename, file)
+            res = drive.put(str(datetime.datetime.now(utc)).replace(' ', '') + filename, file)
             items = drive.list()
             print(items)
             return render_template('files.html', title='Files', files=items['names'])
