@@ -7,6 +7,10 @@
 - [ ]  Guide: create and use your first content 
 - [x]  delete (I personally think this is cool but less important at the moment)
 
+## Website 
+
+- [ ] Fancy Image Slider
+
 ## Product Hunt (9 or 9:30am Berlin time)
 
 - [x]  Look at other successful posts (Prisma, etc)
@@ -23,4 +27,4 @@
 
 ## Space
 
-- [ ] testimonial
+- [ ] Testimonial for newsletter
