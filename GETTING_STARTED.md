@@ -4,8 +4,7 @@
 
 1. First up you're going to want to install Berowra, head to https://deta.space/discovery/berowra and click the big blue `Install` button!
 2. Select Berowra in the App Library and let it launch!
-3. Next up, select `New Collection`: <br />
-<img src="https://cloud-cusao41w8-hack-club-bot.vercel.app/2screenshot_2021-07-24_at_12.48.29_pm.png" width="400" />
+3. Next up, select `New Collection`: <br /> <img src="https://cloud-cusao41w8-hack-club-bot.vercel.app/2screenshot_2021-07-24_at_12.48.29_pm.png" width="400" />
 4. We're now going to want to create a template for each piece of content, in this case we'll want to create a numbers field to give each pizza joint a rating out of five and a files field to upload photos of the pizza at each shop.
 5. We'll be redirected home, here we want to select our `Pizza Reviews!` collection
 6. And then we'll choose `Create New` to create a new pizza review
