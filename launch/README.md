@@ -16,7 +16,7 @@
 
 - [x]  Look at other successful posts (Prisma, etc)
 - [x]  Description
-- [ ]  Pictures
+- [x]  Pictures
 - [ ]  Video (30 seconds)?
 - [x]  Comment from Maker 
 
