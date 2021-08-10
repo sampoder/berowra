@@ -2,14 +2,15 @@
 
 ## Product
 
-- [ ]  Homepage copy feedback (Max needs to give Sam)
+- [x]  Homepage copy feedback (Max needs to give Sam)
 - [x]  GitHub Repo 'Install on Space' button
 - [ ]  Guide: create and use your first content 
 - [x]  delete (I personally think this is cool but less important at the moment)
+- [ ]  Fix CSS
 
 ## Website 
 
-- [ ] Fancy Image Slider
+- [x] Fancy Image Slider
 
 ## Product Hunt (9 or 9:30am Berlin time)
 
@@ -18,7 +19,6 @@
 - [ ]  Pictures
 - [ ]  Video (30 seconds)?
 - [x]  Comment from Maker 
-- [ ]  Add all content when it's live (9 a.m. CET, 3pm Singapore)
 
 ## HNews (Show HN)
 
