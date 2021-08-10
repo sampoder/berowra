@@ -4,7 +4,7 @@
 
 - [x]  Homepage copy feedback (Max needs to give Sam)
 - [x]  GitHub Repo 'Install on Space' button
-- [ ]  Guide: create and use your first content 
+- [x]  Guide: create and use your first content 
 - [x]  delete (I personally think this is cool but less important at the moment)
 - [x]  Fix CSS
 
