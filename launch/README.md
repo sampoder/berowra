@@ -17,7 +17,7 @@
 - [x]  Look at other successful posts (Prisma, etc)
 - [x]  Description
 - [x]  Pictures
-- [ ]  Video (30 seconds)?
+- [x]  Video (30 seconds)?
 - [x]  Comment from Maker 
 
 ## HNews (Show HN)
@@ -27,4 +27,4 @@
 
 ## Space
 
-- [ ] Testimonial for newsletter
+- [x] Testimonial for newsletter
