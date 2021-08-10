@@ -1,4 +1,4 @@
-👋 Hi friends! I've always found CMSs a challenge in the past, whether hosting them was painful or they cost a ton. No fun :( I wanted to make a CMS that was a little more fun and that you could use for a couple of minutes and then have the job done :D So I built Berowra (named after my grandparent's home town).
+👋 Hi friends (and Tosh, thank you for hunting me)! I've always found CMSs a challenge in the past, whether hosting them was painful or they cost a ton. No fun :( I wanted to make a CMS that was a little more fun and that you could use for a couple of minutes and then have the job done :D So I built Berowra (named after my grandparent's home town).
 
 First up, I built Berowra for Deta Space. Deta Space is kind of like the App Store but online, the CMS will run on Deta's infrastructure, without the need for maintenance by yourself, for free (the best part IMO). You can directly view & access the data Berowra stores through Space, which gives you a nice look into how it all works. I feel hosting Berowra on Deta Space strikes a nice balance between the benefits of a self hosted CMS and a hosted CMS, which I'm reallly happy with.
 
