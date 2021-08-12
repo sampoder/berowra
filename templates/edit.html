@@ -5,6 +5,13 @@
   </head>
   <body>
     {% include 'nav.html' %}
+    <script>
+      function decodeHtml(html) {
+        var txt = document.createElement("textarea");
+        txt.innerHTML = html;
+        return txt.value;
+      }
+    </script>
     <section
       class="
         pt-6
@@ -44,12 +51,14 @@
               required
             />
           </label>
-          
-          <span for="published-checkbox">Published? <input
-            type="checkbox"
-            id="published-checkbox"
-            name="published-checkbox"
-            {{published}}
+
+          <span for="published-checkbox"
+            >Published?
+            <input
+              type="checkbox"
+              id="published-checkbox"
+              name="published-checkbox"
+              {{published}}
           /></span>
           {% for item in content %}
           <label class="block">
@@ -151,11 +160,10 @@
                   while(typeof EasyMDE == 'undefined') // define the condition as you like
                   await new Promise(resolve => setTimeout(resolve, 1000));
                   if(typeof easyMDE{{item[0]}} == 'undefined'){
-                    var easyMDE{{item[0]}} = new EasyMDE({element: document.getElementById('{{item[0]}}'), initialValue: `{{item[1]['value'] | replace("`","\`") }}`});
+                    var easyMDE{{item[0]}} = new EasyMDE({element: document.getElementById('{{item[0]}}'), initialValue: decodeHtml(`{{item[1]['value'] | replace("`","\`") }}`)});
                   }
-                 
+
               })();
-              
             </script>
             {% endif %} {% if item[1]['type'] == "Files" %}
             <small>(Deselect files to delete them.)</small>
@@ -219,8 +227,7 @@
               rounded-md
               py-2
               px-3
-              text-gray-100
-              text-left
+              text-gray-100 text-left
               bg-blue-600
             "
           />
@@ -232,12 +239,13 @@
               rounded-md
               py-2
               px-3
-              text-gray-100
-              text-left
+              text-gray-100 text-left
               bg-red-600
             "
             onclick='if (window.confirm("Do you really want to delete this piece of content?")) { window.location.assign("{{contentId}}/delete");}'
-          >Delete Content</button>
+          >
+            Delete Content
+          </button>
         </div>
       </form>
     </section>
