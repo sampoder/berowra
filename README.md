@@ -2,6 +2,8 @@
 
 [<img src="space_button.png" alt="Install Berowra on Deta Space" width="250px">](https://deta.space/discovery/berowra)
 
+<a href="https://www.producthunt.com/posts/berowra?utm_source=badge-top-post-badge&utm_medium=badge&utm_souce=badge-berowra" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/top-post-badge.svg?post_id=308004&theme=light&period=daily" alt="Berowra - An open source CMS that you'll finally enjoy | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+
 With Berowra you can get a CMS up in a minute, not a day. Through Deta Space, Berowra gives you the control of self hosting without any need for infrastructure maintenance. It's easy to use, flexible and completely free. Berowra was built during [Deta VC](https://deta.vc).
 
 Berowra has the following features:
