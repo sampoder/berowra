@@ -10,7 +10,8 @@ import random
 load_dotenv()
 
 path = "" if os.getenv("LOCAL_DEV") else "https://" + os.getenv("DETA_PATH")
-host = ".deta.app" if os.getenv("DETA_SPACE_APP") else "" if os.getenv("LOCAL_DEV") else ".deta.dev"
+host = ".deta.app" if os.getenv("DETA_SPACE_APP") else "" if os.getenv(
+    "LOCAL_DEV") else ".deta.dev"
 
 app = Flask(__name__)
 
@@ -37,6 +38,7 @@ def index():
         'search')if request.args.get('search') != None and request.args.get('search').replace(' ', '') != '' else 'Filter results'))
     r.headers.set('cache-control', 'no-store')
     return r
+
 
 @app.route("/<id>/filesJSON", methods=['GET', 'POST'])
 def filesJSON(id):
@@ -76,7 +78,8 @@ def files():
             return redirect(request.url)
         if file:
             filename = secure_filename(file.filename)
-            res = drive.put(str(datetime.datetime.now(utc)).replace(' ', '') + filename, file)
+            res = drive.put(str(datetime.datetime.now(
+                utc)).replace(' ', '') + filename, file)
             items = drive.list()
             print(items)
             return render_template('files.html', title='Files', files=items['names'])
@@ -101,9 +104,10 @@ def api():
         for sub_list in contentItems:
             contentItems = sub_list
     except:
-        contentItems = []    
+        contentItems = []
     print(contentItems)
     return render_template('api.html', collections=items, exampleKey=contentItems[0]['key'] if len(contentItems) > 0 else None)
+
 
 @app.route('/new', methods=['GET', 'POST'])
 def new():
@@ -142,16 +146,59 @@ def collection(id):
     print(items)
     return render_template("collection.html", title=data['title'], items=items, filesPage=False, collection=True, collectionId=id, searchPlaceholder=request.args.get('search')if request.args.get('search') != None and request.args.get('search').replace(' ', '') != '' else 'Filter results', collectionIdDisplay='('+id+')')
 
+
+@app.route('/collection/<id>/edit', methods=['GET'])
+def collectionEdit(id):
+    data = collectionsDB.get(id)
+    return render_template("editCollection.html", title=data['title'], collectionId=id, collectionIdDisplay='('+id+')', collectionItems = data['templateItems'])
+
+
+@app.route('/collection/<id>/edit/new-field', methods=['POST'])
+def collectionAddField(id):
+    data = collectionsDB.get(id)
+    print(data['templateItems'])
+    data['templateItems'].append({
+        "id": random.randint(0, 10000000000000),
+        "title": request.form['fieldTitle'],
+        "type": request.form['fieldType']
+    })
+    collectionsDB.put(data)
+    return redirect(f"{path}{host}/collection/"+id+"/edit")
+
+@app.route('/collection/<id>/edit/edit-field/<field>', methods=['POST'])
+def collectionEditField(id, field):
+    data = collectionsDB.get(id)
+    for templateItemIndex, templateItem in enumerate(data['templateItems']):
+        if int(templateItem['id']) == int(field):
+            data['templateItems'][templateItemIndex] = {
+                "id": field,
+                "title": request.form['fieldTitle'],
+                "type": request.form['fieldType']
+            }
+    collectionsDB.put(data)
+    return redirect(f"{path}{host}/collection/"+id+"/edit")
+
+@app.route('/collection/<id>/edit/delete-field/<field>', methods=['GET'])
+def collectionDeleteField(id, field):
+    data = collectionsDB.get(id)
+    for templateItemIndex, templateItem in enumerate(data['templateItems']):
+        if int(templateItem['id']) == int(field):
+            del data['templateItems'][templateItemIndex]
+    collectionsDB.put(data)
+    return redirect(f"{path}{host}/collection/"+id+"/edit")
+
 @app.route('/collection/<id>/delete', methods=['GET'])
 def collectionDelete(id):
     collectionsDB.delete(id)
     return redirect(f"{path}{host}/")
+
 
 @app.route('/content/<id>/delete', methods=['GET'])
 def contentDelete(id):
     contentData = contentDB.get(id)
     contentDB.delete(id)
     return redirect(f"{path}{host}/collection/"+contentData['collectionKey'])
+
 
 @app.route('/content/<id>', methods=['GET', 'POST'])
 def content(id):
@@ -217,7 +264,7 @@ def newContent(id):
     res = contentDB.insert(
         {"collectionKey": id, "content": {}, "title": "Unnamed Content", "published": False, "lastUpdated": str(datetime.datetime.now(utc))})
     print(res)
-    return redirect(f"{path}{host}/content/" +res['key'])
+    return redirect(f"{path}{host}/content/" + res['key'])
 
 
 @app.route('/api/content/<id>', methods=['GET'])

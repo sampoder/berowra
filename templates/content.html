@@ -207,6 +207,28 @@
     </div>
     {% endif %} {% if collection is true %}
     <div class="relative flex">
+      <a
+        class="
+          py-2
+          px-3
+          rounded-md
+          text-gray-100
+          focus:border-blue-300
+          focus:ring
+          focus:ring-blue-200
+          focus:ring-opacity-50
+          text-left
+          bg-purple-600
+          cursor-pointer
+          ml-3
+        "
+        href="/collection/{{collectionId}}/edit"
+      >
+        Edit Collection
+    </a>
+    </div>
+    {% endif %}{% if collection is true %}
+    <div class="relative flex">
       <div
         class="
           py-2
