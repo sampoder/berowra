@@ -171,7 +171,7 @@ def collectionEditField(id, field):
     for templateItemIndex, templateItem in enumerate(data['templateItems']):
         if int(templateItem['id']) == int(field):
             data['templateItems'][templateItemIndex] = {
-                "id": field,
+                "id": int(field),
                 "title": request.form['fieldTitle'],
                 "type": request.form['fieldType']
             }

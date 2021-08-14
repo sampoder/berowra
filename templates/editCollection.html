@@ -21,6 +21,9 @@
     >
       <h2 class="text-2xl font-bold">Edit Collection:  <a class="underline"
         href="/collection/{{collectionId}}">{{title}}</a></h2>
+      <p>
+        Editing is in <b>BETA</b>, please report any bugs <a href="https://github.com/sampoder/berowra" class="underline">here</a>.
+      </p>
       {% for item in collectionItems %}
       {% if item.title|trim != "" %}
         <form
