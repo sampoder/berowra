@@ -245,6 +245,9 @@ def content(id):
     getContentData = contentDB.get(id)
     getCollectionData = collectionsDB.get(getContentData['collectionKey'])
     getContent = getContentData['content']
+    templateItemsKeys = []
+    for x in getCollectionData['templateItems']:
+        templateItemsKeys.append(str(x['id']))
     if getContentData['content'] == {}:
         for x in getCollectionData['templateItems']:
             if 'title' in x:
@@ -254,8 +257,13 @@ def content(id):
             if 'title' in x and str(x['id']) not in getContent:
                 print(x)
                 getContent[int(x['id'])] = x
+            elif 'title' in x and str(x['id']) in getContent:
+                x['value'] = getContent[str(x['id'])]['value']
+                getContent[str(x['id'])] = x
+    for x in list(getContent):
+        if x not in templateItemsKeys:
+            del getContent[x]
     getContentArray = list(getContent.items())
-    print(getContentArray)
     return render_template('edit.html', content=getContentArray, title=getContentData['title'], published="checked"if getContentData['published'] == True else "", contentId=id)
 
 
