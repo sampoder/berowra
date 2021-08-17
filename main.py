@@ -247,21 +247,30 @@ def content(id):
     getContent = getContentData['content']
     templateItemsKeys = []
     for x in getCollectionData['templateItems']:
+        print()
         templateItemsKeys.append(str(x['id']))
     if getContentData['content'] == {}:
+        print('hi!')
         for x in getCollectionData['templateItems']:
+            print(x)
             if 'title' in x:
-                getContent[x['id']] = {'type': x['type'], 'title': x['title']}
+                getContent[str(x['id'])] = {'type': x['type'], 'title': x['title']}
     else:
         for x in getCollectionData['templateItems']:
+            print(x)
             if 'title' in x and str(x['id']) not in getContent:
+                print(x)
+                print('test:')
                 print(x)
                 getContent[int(x['id'])] = x
             elif 'title' in x and str(x['id']) in getContent:
-                x['value'] = getContent[str(x['id'])]['value']
+                x['value'] = getContent[str(x['id'])]['value'] if 'value' in getContent[str(x['id'])] else ''
                 getContent[str(x['id'])] = x
     for x in list(getContent):
-        if x not in templateItemsKeys:
+        print(x)
+        if str(x) not in templateItemsKeys:
+            print('deleting:')
+            print(x)
             del getContent[x]
     getContentArray = list(getContent.items())
     return render_template('edit.html', content=getContentArray, title=getContentData['title'], published="checked"if getContentData['published'] == True else "", contentId=id)

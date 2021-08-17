@@ -21,8 +21,8 @@
     >
       <h2 class="text-2xl font-bold">Edit Collection:  <a class="underline"
         href="/collection/{{collectionId}}">{{title}}</a></h2>
-      <p>
-        Editing is in <b>BETA</b>, please report any bugs <a href="https://github.com/sampoder/berowra" class="underline">here</a>.
+      <p class="max-w-xl">
+        Editing is in <b>BETA</b>, please report any bugs <a href="https://github.com/sampoder/berowra" class="underline">here</a>. Before using this tool, making a backup <a href="/api/collection/{{collectionId}}?content" class="underline">here</a> is recommended as a precautionary measure.
       </p>
       {% for item in collectionItems %}
       {% if item.title|trim != "" %}
