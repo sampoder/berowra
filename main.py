@@ -7,6 +7,7 @@ import datetime
 from werkzeug.utils import secure_filename
 import pytz
 import random
+from flask_cors import CORS
 load_dotenv()
 
 path = "" if os.getenv("LOCAL_DEV") else "https://" + os.getenv("DETA_PATH")
@@ -14,6 +15,8 @@ host = ".deta.app" if os.getenv("DETA_SPACE_APP") else "" if os.getenv(
     "LOCAL_DEV") else ".deta.dev"
 
 app = Flask(__name__)
+
+CORS(app)
 
 deta = Deta()
 
