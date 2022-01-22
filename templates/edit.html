@@ -169,7 +169,7 @@
             <small>(Deselect files to delete them.)</small>
             <div id="{{item[0]}}-checkbox" class="mt-2">
               {% for checkbox in item[1]['value'] %}
-              <a target="_blank" href="/file/{{checkbox}}">
+              <a target="_blank" style="display: block;" class="mb-2" href="/file/{{checkbox}}">
                 <input
                   type="checkbox"
                   id="{{item[0]}}-file-checkbox-{{checkbox}}"

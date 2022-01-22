@@ -229,14 +229,10 @@ def content(id):
             elif '-files-upload-box' in x[1][0]:
                 print('skipping')
             elif '-file-checkbox-' in x[1][0]:
-                content[int(x[1][0].split('-file-checkbox-')[0])]['value'] = []
+                if 'value' not in content[int(x[1][0].split('-file-checkbox-')[0])]:
+                    content[int(x[1][0].split('-file-checkbox-')[0])]['value'] = []
                 if x[1][1] == 'on':
-                    if "value" in content[int(x[1][0].split('-file-checkbox-')[0])]:
-                        content[int(x[1][0].split('-file-checkbox-')[0])
-                                ]['value'].append(x[1][0].split('-file-checkbox-')[1])
-                    else:
-                        content[int(x[1][0].split('-file-checkbox-')[0])
-                                ]['value'] = [x[1][0].split('-file-checkbox-')[1]]
+                    content[int(x[1][0].split('-file-checkbox-')[0])]['value'].append(x[1][0].split('-file-checkbox-')[1])
             elif content[int(x[1][0])]["type"] == 'String Array':
                 content[int(x[1][0])]['value'] = x[1][1].split(',')
             else:
