@@ -133,7 +133,7 @@ def new():
             "templateItems": finalData,
             "lastUpdated": str(datetime.datetime.now(utc))
         })
-        return redirect(f"{path}{host}/")
+        return redirect(f"/")
     else:
         return render_template('new.html')
 
@@ -166,7 +166,7 @@ def collectionAddField(id):
         "type": request.form['fieldType']
     })
     collectionsDB.put(data)
-    return redirect(f"{path}{host}/collection/"+id+"/edit")
+    return redirect(f"/collection/"+id+"/edit")
 
 @app.route('/collection/<id>/edit/edit-field/<field>', methods=['POST'])
 def collectionEditField(id, field):
@@ -179,7 +179,7 @@ def collectionEditField(id, field):
                 "type": request.form['fieldType']
             }
     collectionsDB.put(data)
-    return redirect(f"{path}{host}/collection/"+id+"/edit")
+    return redirect(f"/collection/"+id+"/edit")
 
 @app.route('/collection/<id>/edit/delete-field/<field>', methods=['GET'])
 def collectionDeleteField(id, field):
@@ -188,19 +188,19 @@ def collectionDeleteField(id, field):
         if int(templateItem['id']) == int(field):
             del data['templateItems'][templateItemIndex]
     collectionsDB.put(data)
-    return redirect(f"{path}{host}/collection/"+id+"/edit")
+    return redirect(f"/collection/"+id+"/edit")
 
 @app.route('/collection/<id>/delete', methods=['GET'])
 def collectionDelete(id):
     collectionsDB.delete(id)
-    return redirect(f"{path}{host}/")
+    return redirect(f"/")
 
 
 @app.route('/content/<id>/delete', methods=['GET'])
 def contentDelete(id):
     contentData = contentDB.get(id)
     contentDB.delete(id)
-    return redirect(f"{path}{host}/collection/"+contentData['collectionKey'])
+    return redirect(f"/collection/"+contentData['collectionKey'])
 
 
 @app.route('/content/<id>', methods=['GET', 'POST'])
@@ -240,7 +240,7 @@ def content(id):
         contentArray = list(content.items())
         contentDB.update({'content': content, 'published': published, 'title': title, 'titleCaps': title.upper(),
                          "lastUpdated": str(datetime.datetime.now(utc))}, id)
-        return redirect(f"{path}{host}/collection/{contentData['collectionKey']}")
+        return redirect(f"/collection/{contentData['collectionKey']}")
     getContentData = contentDB.get(id)
     getCollectionData = collectionsDB.get(getContentData['collectionKey'])
     getContent = getContentData['content']
@@ -280,7 +280,7 @@ def newContent(id):
     res = contentDB.insert(
         {"collectionKey": id, "content": {}, "title": "Unnamed Content", "published": False, "lastUpdated": str(datetime.datetime.now(utc))})
     print(res)
-    return redirect(f"{path}{host}/content/" + res['key'])
+    return redirect(f"/content/" + res['key'])
 
 
 @app.route('/api/content/<id>', methods=['GET'])

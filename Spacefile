@@ -1,0 +1,13 @@
+# Spacefile Docs: https://go.deta.dev/docs/spacefile/v0
+v: 0
+micros:
+    - name: deta-vc-cms-cdn
+      src: .
+      engine: python3.9
+      primary: true
+      public_routes:
+        - "/file/*"
+        - "/api/collection/*"
+        - "/api/content/*"
+        - "/api/collections"
+icon: berowra.png
